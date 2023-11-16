@@ -29,22 +29,22 @@ public interface ProductRepository extends JpaRepository<Products, Long> {
     @Query("SELECT product FROM Products product WHERE product.model = :model")
     List<Products> findByModelName(String model);
 
-    @Query("SELECT product FROM Products product " +
-            "WHERE (coalesce(:brand, null) IS NULL OR product.brand IN :brand) " +
-            "AND (coalesce(:model, null) IS NULL OR product.model IN :model) " +
-            "AND (coalesce(:storageCapacity, null) IS NULL OR product.storageCapacity IN :storageCapacity) " +
-            "AND (coalesce(:ram, null) IS NULL OR product.ram IN :ram) " +
-            "AND (coalesce(:priceStart, null) IS NULL OR product.price BETWEEN :priceStart AND :priceEnd) " +
-            "ORDER BY CASE WHEN :sortByPrice = true THEN product.price ELSE -product.price END ASC")
-    Page<ProductProjection> findProductsByFilterParams(
-            List<String> brands,
-            List<String> models,
-            List<String> storageCapacities,
-            List<String> ramCapacities,
-            Integer priceStart,
-            Integer priceEnd,
-            boolean sortByPrice,
-            Pageable pageable);
+//    @Query("SELECT product FROM Products product " +
+//            "WHERE (coalesce(:brand, null) IS NULL OR product.brand IN :brand) " +
+//            "AND (coalesce(:model, null) IS NULL OR product.model IN :model) " +
+//            "AND (coalesce(:storageCapacity, null) IS NULL OR product.storageCapacity IN :storageCapacity) " +
+//            "AND (coalesce(:ram, null) IS NULL OR product.ram IN :ram) " +
+//            "AND (coalesce(:priceStart, null) IS NULL OR product.price BETWEEN :priceStart AND :priceEnd) " +
+//            "ORDER BY CASE WHEN :sortByPrice = true THEN product.price ELSE -product.price END ASC")
+//    Page<ProductProjection> findProductsByFilterParams(
+//            List<String> brands,
+//            List<String> models,
+//            List<String> storageCapacities,
+//            List<String> ramCapacities,
+//            Integer priceStart,
+//            Integer priceEnd,
+//            boolean sortByPrice,
+//            Pageable pageable);
 
     @Query("SELECT product FROM Products product " +
             "WHERE UPPER(product.brand) LIKE UPPER(CONCAT('%',:text,'%')) " +

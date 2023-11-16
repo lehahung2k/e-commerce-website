@@ -33,8 +33,8 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
 //    private final AmazonS3 amazonS3client;
 
-    @Value("${amazon.s3.bucket.name}")
-    private String bucketName;
+//    @Value("${amazon.s3.bucket.name}")
+//    private String bucketName;
 
     @Override
     public Products getProductById(Long productId) {
@@ -52,18 +52,18 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.getPerfumesByIds(productsId);
     }
 
-    @Override
-    public Page<ProductProjection> findProductsByFilterParams(ProductSearchRequest filter, Pageable pageable) {
-        return productRepository.findProductsByFilterParams(
-                filter.getBrand(),
-                filter.getModel(),
-                filter.getStorageCapacity(),
-                filter.getRamCapacity(),
-                filter.getPrices().get(0),
-                filter.getPrices().get(1),
-                filter.getSortByPrice(),
-                pageable);
-    }
+//    @Override
+//    public Page<ProductProjection> findProductsByFilterParams(ProductSearchRequest filter, Pageable pageable) {
+//        return productRepository.findProductsByFilterParams(
+//                filter.getBrand(),
+//                filter.getModel(),
+//                filter.getStorageCapacity(),
+//                filter.getRamCapacity(),
+//                filter.getPrices().get(0),
+//                filter.getPrices().get(1),
+//                filter.getSortByPrice(),
+//                pageable);
+//    }
 
     @Override
     public List<Products> findByBrand(String brand) {

@@ -12,6 +12,7 @@ public interface ProductProjection {
     Integer getQuantityInStock();
     String getColor();
     String getStorageCapacity();
+    String getRam();
     Double getRating();
     
     @Value("#{target.reviews.size()}")

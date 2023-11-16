@@ -19,7 +19,7 @@ public interface ProductService {
 
     List<ProductProjection> getProductByIds(List<Long> perfumesId);
 
-    Page<ProductProjection> findProductsByFilterParams(ProductSearchRequest filter, Pageable pageable);
+//    Page<ProductProjection> findProductsByFilterParams(ProductSearchRequest filter, Pageable pageable);
 
     List<Products> findByBrand(String brand);
 

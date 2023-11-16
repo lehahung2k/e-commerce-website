@@ -10,4 +10,5 @@ public class MessageConstants {
     public static final String EMPTY_LAST_NAME = "Last name cannot be empty";
     public static final String PASSWORD_CHARACTER_LENGTH = "Password must be between 6 and 16 characters";
     public static final String PASSWORD2_CHARACTER_LENGTH = "Password2 must be between 6 and 16 characters";
+    public static final String ORDER_NOT_FOUND = "Order not found";
 }

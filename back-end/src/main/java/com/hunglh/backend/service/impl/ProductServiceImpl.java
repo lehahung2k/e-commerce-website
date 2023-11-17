@@ -88,7 +88,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public Products saveProduct(Products perfume, MultipartFile multipartFile) {
+    public Products saveProduct(Products products, MultipartFile multipartFile) {
 //        if (multipartFile == null) {
 //            perfume.setFilename(amazonS3client.getUrl(bucketName, "empty.jpg").toString());
 //        } else {
@@ -103,7 +103,7 @@ public class ProductServiceImpl implements ProductService {
 //            perfume.setFilename(amazonS3client.getUrl(bucketName, fileName).toString());
 //            file.delete();
 //        }
-        return productRepository.save(perfume);
+        return productRepository.save(products);
     }
 
     @Override

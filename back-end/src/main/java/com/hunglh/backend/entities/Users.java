@@ -1,12 +1,12 @@
 package com.hunglh.backend.entities;
 
-import com.hunglh.backend.enums.AuthProvider;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hunglh.backend.enums.Role;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.*;
 import java.util.Objects;
 import java.util.Set;
 
@@ -18,8 +18,7 @@ import java.util.Set;
 public class Users {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_id_seq")
-    @SequenceGenerator(name = "users_id_seq", sequenceName = "users_id_seq", initialValue = 4, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Thay đổi từ GenerationType.SEQUENCE sang GenerationType.IDENTITY
     @Column(name = "id")
     private Long id;
 
@@ -56,14 +55,14 @@ public class Users {
     @Column(name = "active")
     private boolean active;
 
-    @Column(name = "provider")
-    @Enumerated(EnumType.STRING)
-    private AuthProvider provider;
-
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore  // fix bi-direction toString() recursion problem
+    private Cart cart;
 
     @Override
     public boolean equals(Object o) {

@@ -1,11 +1,8 @@
-package me.zhulin.shopapi.repository;
+package com.hunglh.backend.repository;
 
-import me.zhulin.shopapi.entity.ProductInOrder;
+import com.hunglh.backend.entities.ProductInOrder;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-/**
- * Created By Zhu Lin on 3/14/2018.
- */
 public interface ProductInOrderRepository extends JpaRepository<ProductInOrder, Long> {
 
 }

@@ -1,12 +1,7 @@
-package me.zhulin.shopapi.repository;
+package com.hunglh.backend.repository;
 
-import me.zhulin.shopapi.entity.Cart;
+import com.hunglh.backend.entities.Cart;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
-/**
- * Created By Zhu Lin on 1/2/2019.
- */
-
-public interface CartRepository extends JpaRepository<Cart, Integer> {
+public interface CartRepository extends JpaRepository<Cart, Long> {
 }

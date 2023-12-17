@@ -17,7 +17,7 @@ import java.util.Set;
 public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // auto increment
-    private long cartId;
+    private Long cartId;
 
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId

@@ -8,12 +8,12 @@ import java.util.Date;
 
 @Entity
 @Data
-@Table(name = "brand")
-public class Brand {
+@Table(name = "product_brand")
+public class ProductBrand {
     @Id
     @GeneratedValue
     @Column(name = "brandId")
-    private Long brandId;
+    private Integer brandId;
 
     @Column(name = "brand_name")
     private String brandName;
@@ -28,10 +28,10 @@ public class Brand {
     @Column(name = "update_time")
     private Date updateTime;
 
-    public Brand() {
+    public ProductBrand() {
     }
 
-    public Brand(String brandName, Integer brandType) {
+    public ProductBrand(String brandName, Integer brandType) {
         this.brandName = brandName;
         this.brandType = brandType;
     }

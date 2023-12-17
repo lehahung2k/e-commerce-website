@@ -13,7 +13,7 @@ public class Brand {
     @Id
     @GeneratedValue
     @Column(name = "brandId")
-    private Integer brandId;
+    private Long brandId;
 
     @Column(name = "brand_name")
     private String brandName;

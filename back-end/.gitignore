@@ -39,5 +39,4 @@ build/
 *.log
 
 # Ignore environment configuration files
-application.properties
-application.yml
+.env

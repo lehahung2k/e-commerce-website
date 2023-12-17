@@ -1,10 +1,12 @@
 package com.hunglh.backend.entities;
 
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.ColumnDefault;
 
-import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 
@@ -14,9 +16,11 @@ import java.util.Objects;
 @Entity
 @Table(name = "products")
 public class Products {
+    public Products() {
+    }
+
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_id_seq")
-    @SequenceGenerator(name = "product_id_seq", sequenceName = "product_id_seq", initialValue = 109, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // auto increment
     @Column(name = "id")
     private Long id;
 
@@ -24,13 +28,13 @@ public class Products {
     private String productName;
 
     @Column(name = "brand")
-    private String brand;
+    private Integer brand;
 
     @Column(name = "model")
     private String model;
 
     @Column(name = "price")
-    private Integer price;
+    private BigDecimal price;
 
     @Column(name = "description")
     private String description;
@@ -62,12 +66,8 @@ public class Products {
     @Column(name = "battery_capacity")
     private String batteryCapacity;
 
-    @Column(name = "rating")
-    private Double rating;
-
-    @OneToMany
-    @ToString.Exclude
-    private List<Review> reviews;
+    @ColumnDefault("0")
+    private Integer productStatus;
 
     @Override
     public boolean equals(Object o) {

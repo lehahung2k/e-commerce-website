@@ -19,14 +19,14 @@ public class AuthServiceImpl implements AuthService {
         try {
             Users user = userRepository.findByEmail(loginForm.getEmail());
             if (user == null) {
-                throw new RuntimeException("Login fail. Please check your email and password");
+                return "Login fail. Please check your email and password";
             }
             if (!passwordEncoder.matches(loginForm.getPassword(), user.getPassword())) {
-                throw new RuntimeException("Login fail. Please check your email and password");
+                return "Login fail. Please check your email and password";
             }
             return "Login success";
         } catch (Exception e) {
-            throw new RuntimeException("Login fail. Please check your email and password");
+            return e.getMessage();
         }
     }
 }

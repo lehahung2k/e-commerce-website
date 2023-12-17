@@ -1,18 +1,15 @@
-package me.zhulin.shopapi.repository;
+package com.hunglh.backend.repository;
 
-import me.zhulin.shopapi.entity.ProductCategory;
+import com.hunglh.backend.entities.ProductBrand;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-/**
- * Created By Zhu Lin on 3/9/2018.
- */
-public interface ProductCategoryRepository extends JpaRepository<ProductCategory, Integer> {
+public interface ProductBrandRepository extends JpaRepository<ProductBrand, Long> {
     // Some category
-    List<ProductCategory> findByCategoryTypeInOrderByCategoryTypeAsc(List<Integer> categoryTypes);
+    List<ProductBrand> findByBrandTypeInOrderByBrandTypeAsc(List<Integer> brandTypes);
     // All category
-    List<ProductCategory> findAllByOrderByCategoryType();
+    List<ProductBrand> findAllByOrderByBrandType();
     // One category
-    ProductCategory findByCategoryType(Integer categoryType);
+    ProductBrand findByBrandType(Integer brandType);
 }

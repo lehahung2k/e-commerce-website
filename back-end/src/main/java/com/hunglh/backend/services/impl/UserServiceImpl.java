@@ -43,8 +43,7 @@ public class UserServiceImpl implements UserService {
             userRepository.save(newUser);
             return "User created successfully";
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
+            return e.getMessage();
         }
     }
 

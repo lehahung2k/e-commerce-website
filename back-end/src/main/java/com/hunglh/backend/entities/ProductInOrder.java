@@ -28,7 +28,6 @@ public class ProductInOrder {
     @JsonIgnore
     private OrderMain orderMain;
 
-
     @Column(name = "product_id", unique = true) // Thêm unique cho productId
     private Long productId;
 
@@ -78,7 +77,7 @@ public class ProductInOrder {
     private Integer count;
 
     public ProductInOrder(Products products, Integer quantity) {
-        this.productId = products.getId();
+        this.productId = products.getProductId();
         this.productName = products.getProductName();
         this.description = products.getDescription();
         this.filename = products.getFilename();

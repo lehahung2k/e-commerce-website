@@ -21,8 +21,8 @@ public class Products {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // auto increment
-    @Column(name = "id")
-    private Long id;
+    @Column(name = "product_id")
+    private Long productId;
 
     @Column(name = "product_name")
     private String productName;
@@ -74,11 +74,11 @@ public class Products {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Products products = (Products) o;
-        return Objects.equals(id, products.id);
+        return Objects.equals(productId, products.productId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(productId);
     }
 }

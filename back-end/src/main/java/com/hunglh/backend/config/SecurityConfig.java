@@ -11,7 +11,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static com.hunglh.backend.enums.Roles.ADMIN;
+import static com.hunglh.backend.enums.Roles.*;
 
 @Configuration
 @EnableWebSecurity
@@ -28,8 +28,16 @@ public class SecurityConfig {
                  .authorizeHttpRequests()
                  .requestMatchers("/**")
                  .permitAll()
-                 .requestMatchers("/product/**").hasRole(ADMIN.name())
-                 .requestMatchers("/cart/**").hasRole(ADMIN.name())
+                 .requestMatchers("/profile/**").authenticated()
+                 .requestMatchers("/order/**").authenticated()
+                 .requestMatchers("/profiles/**").authenticated()
+                 .requestMatchers("/cart/**").hasRole((USER.name()))
+                 .requestMatchers("/order/finish/**").hasRole(EMPLOYEE.name())
+                 .requestMatchers("/order/finish/**").hasRole(ADMIN.name())
+                 .requestMatchers("/seller/product/new").hasRole(ADMIN.name())
+                 .requestMatchers("/seller/**/delete").hasRole(ADMIN.name())
+                 .requestMatchers("/seller/**").hasRole(EMPLOYEE.name())
+                 .requestMatchers("/seller/**").hasRole(ADMIN.name())
                  .anyRequest()
                  .authenticated()
                  .and()

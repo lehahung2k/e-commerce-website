@@ -1,10 +1,12 @@
 package com.hunglh.backend.config;
 
+import com.hunglh.backend.services.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +21,9 @@ import java.io.IOException;
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+    @Value("${jwt.header}")
+    private String HEADER;
+
     @Autowired
     private JwtService jwtService;
     @Autowired
@@ -31,7 +36,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
              @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
 
-        final String authHeader= request.getHeader("authorization");
+        final String authHeader= request.getHeader(HEADER);
         final String jwt;
         final String userEmail;
         System.out.println(authHeader);

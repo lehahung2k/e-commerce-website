@@ -1,7 +1,8 @@
 package com.hunglh.backend.services;
 
+import com.hunglh.backend.dto.authen.JwtResponse;
 import com.hunglh.backend.dto.authen.LoginForm;
 
 public interface AuthService {
-    String login(LoginForm loginForm);
+    JwtResponse login(LoginForm loginForm);
 }

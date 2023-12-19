@@ -1,4 +1,4 @@
-package com.hunglh.backend.services;
+package com.hunglh.backend.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
-public class JwtService {
+public class JwtProvider {
 
     @Value("${jwt.secret}")
     private String KEY;

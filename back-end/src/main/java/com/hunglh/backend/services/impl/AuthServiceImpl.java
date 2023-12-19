@@ -1,6 +1,6 @@
 package com.hunglh.backend.services.impl;
 
-import com.hunglh.backend.services.JwtService;
+import com.hunglh.backend.security.JwtProvider;
 import com.hunglh.backend.dto.authen.JwtResponse;
 import com.hunglh.backend.dto.authen.LoginForm;
 import com.hunglh.backend.entities.Users;
@@ -18,15 +18,15 @@ public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
-    private final JwtService jwtService;
+    private final JwtProvider jwtProvider;
     @Override
     public JwtResponse login(LoginForm loginForm) {
         try {
             this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginForm.getEmail(), loginForm.getPassword()));
             Users user = userRepository.findByEmail(loginForm.getEmail());
-            String jwt = jwtService.generateToken(user);
+            String jwt = jwtProvider.generateToken(user);
             String userRole = user.getRole().isEmpty() ? null : user.getRole().get(0).getRole();
-            return new JwtResponse(jwt, user.getEmail(), user.getFirstName(), user.getLastName(), userRole);
+            return new JwtResponse(jwt, user.getEmail(), user.getFirstName() + " " + user.getLastName(), userRole);
         } catch (Exception e) {
             e.printStackTrace();
             throw new ProviderNotFoundException("Email or password is incorrect");

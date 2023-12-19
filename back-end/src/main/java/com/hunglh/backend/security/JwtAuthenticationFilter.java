@@ -1,6 +1,5 @@
-package com.hunglh.backend.config;
+package com.hunglh.backend.security;
 
-import com.hunglh.backend.services.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,7 +24,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private String HEADER;
 
     @Autowired
-    private JwtService jwtService;
+    private JwtProvider jwtProvider;
     @Autowired
     private UserDetailsService userDetailsService;
 
@@ -46,12 +45,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         jwt=authHeader.substring(7);
-        userEmail=jwtService.extractUsername(jwt);
+        userEmail= jwtProvider.extractUsername(jwt);
 
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication()==null) {
             UserDetails userDetails =this.userDetailsService.loadUserByUsername(userEmail);
 
-            if (jwtService.isTokenValid(jwt,userDetails)){
+            if (jwtProvider.isTokenValid(jwt,userDetails)){
                 UsernamePasswordAuthenticationToken authenticationToken =new UsernamePasswordAuthenticationToken(
                         userDetails,
                         null,

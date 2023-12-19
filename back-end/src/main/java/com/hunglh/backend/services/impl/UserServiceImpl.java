@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -29,7 +28,7 @@ public class UserServiceImpl implements UserService {
                 throw new RuntimeException("Email already exist");
             }
             List<Role> list = new ArrayList<>();
-            list.add(new Role(Roles.ADMIN.name()));
+            list.add(new Role(Roles.USER.name()));
             Users newUser = new Users();
             newUser.setRole(list);
             newUser.setFirstName(user.getFirstName());

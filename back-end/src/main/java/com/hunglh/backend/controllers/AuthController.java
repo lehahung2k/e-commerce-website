@@ -1,5 +1,6 @@
 package com.hunglh.backend.controllers;
 
+import com.hunglh.backend.dto.authen.JwtResponse;
 import com.hunglh.backend.dto.authen.LoginForm;
 import com.hunglh.backend.services.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginForm loginForm){
+    public ResponseEntity<JwtResponse> login(@RequestBody LoginForm loginForm){
         return ResponseEntity.status(HttpStatus.OK).body(authService.login(loginForm));
     }
 }

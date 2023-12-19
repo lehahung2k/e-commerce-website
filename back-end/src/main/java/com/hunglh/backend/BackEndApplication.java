@@ -27,7 +27,7 @@ public class BackEndApplication {
 		System.setProperty("jwt.secret", jwtSecret);
 
 		String hostName = dotenv.get("HOSTNAME");
-		System.setProperty("host.name", hostName);
+		System.setProperty("hostname", hostName);
 
 		SpringApplication.run(BackEndApplication.class, args);
 	}

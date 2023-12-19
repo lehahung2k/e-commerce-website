@@ -1,4 +1,4 @@
-package com.hunglh.backend.repository;
+package com.hunglh.backend.repositories;
 
 import com.hunglh.backend.entities.ProductBrand;
 import org.springframework.data.jpa.repository.JpaRepository;

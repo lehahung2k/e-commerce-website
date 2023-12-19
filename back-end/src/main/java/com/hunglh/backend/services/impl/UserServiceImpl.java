@@ -1,16 +1,17 @@
 package com.hunglh.backend.services.impl;
 
 import com.hunglh.backend.dto.RegisterForm;
+import com.hunglh.backend.entities.Role;
 import com.hunglh.backend.entities.Users;
-import com.hunglh.backend.enums.Role;
-import com.hunglh.backend.repository.UserRepository;
+import com.hunglh.backend.enums.Roles;
+import com.hunglh.backend.repositories.UserRepository;
 import com.hunglh.backend.services.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -27,7 +28,10 @@ public class UserServiceImpl implements UserService {
             if (userRepository.findByEmail(user.getEmail()) != null) {
                 throw new RuntimeException("Email already exist");
             }
+            List<Role> list = new ArrayList<>();
+            list.add(new Role(Roles.ADMIN.name()));
             Users newUser = new Users();
+            newUser.setRole(list);
             newUser.setFirstName(user.getFirstName());
             newUser.setLastName(user.getLastName());
             newUser.setEmail(user.getEmail());
@@ -37,7 +41,6 @@ public class UserServiceImpl implements UserService {
             newUser.setCountry(user.getCountry());
             newUser.setPostIndex(user.getPostalCode());
             newUser.setPhoneNumber(user.getPhoneNumber());
-            newUser.setRoles(Collections.singleton(Role.USER));
             newUser.setActive(true);
 
             userRepository.save(newUser);

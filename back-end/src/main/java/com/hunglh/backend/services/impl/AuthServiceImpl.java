@@ -2,7 +2,7 @@ package com.hunglh.backend.services.impl;
 
 import com.hunglh.backend.dto.authen.LoginForm;
 import com.hunglh.backend.entities.Users;
-import com.hunglh.backend.repository.UserRepository;
+import com.hunglh.backend.repositories.UserRepository;
 import com.hunglh.backend.services.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

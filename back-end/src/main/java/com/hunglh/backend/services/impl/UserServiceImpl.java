@@ -1,9 +1,11 @@
 package com.hunglh.backend.services.impl;
 
 import com.hunglh.backend.dto.RegisterForm;
+import com.hunglh.backend.entities.Cart;
 import com.hunglh.backend.entities.Role;
 import com.hunglh.backend.entities.Users;
 import com.hunglh.backend.enums.Roles;
+import com.hunglh.backend.repositories.CartRepository;
 import com.hunglh.backend.repositories.UserRepository;
 import com.hunglh.backend.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final CartRepository cartRepository;
 
     @Override
     @Transactional
@@ -41,6 +44,10 @@ public class UserServiceImpl implements UserService {
             newUser.setPostIndex(user.getPostalCode());
             newUser.setPhoneNumber(user.getPhoneNumber());
             newUser.setActive(true);
+
+            // initial Cart
+            Cart savedCart = cartRepository.save(new Cart(newUser));
+            newUser.setCart(savedCart);
 
             userRepository.save(newUser);
             return "User created successfully";

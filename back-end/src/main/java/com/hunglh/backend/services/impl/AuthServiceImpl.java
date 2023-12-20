@@ -28,8 +28,7 @@ public class AuthServiceImpl implements AuthService {
             String userRole = user.getRole().isEmpty() ? null : user.getRole().get(0).getRole();
             return new JwtResponse(jwt, user.getEmail(), user.getFirstName() + " " + user.getLastName(), userRole);
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new ProviderNotFoundException("Email or password is incorrect");
+            throw new ProviderNotFoundException(e.getMessage());
         }
     }
 }

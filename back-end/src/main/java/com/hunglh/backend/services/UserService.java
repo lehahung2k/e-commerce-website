@@ -1,6 +1,7 @@
 package com.hunglh.backend.services;
 
 import com.hunglh.backend.dto.RegisterForm;
+import com.hunglh.backend.dto.user.UserUpdate;
 import com.hunglh.backend.entities.Users;
 import org.springframework.http.ResponseEntity;
 
@@ -11,7 +12,7 @@ public interface UserService {
     String createUser(RegisterForm user);
     void updatePassword(String newPassword, String email);
 
-    void updateProfile(String fullName, String email);
+    void updateProfile(UserUpdate userUpdate, String email);
 
     Users getUserByEmail(String email);
 

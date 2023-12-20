@@ -1,6 +1,7 @@
 package com.hunglh.backend.services.impl;
 
 import com.hunglh.backend.dto.RegisterForm;
+import com.hunglh.backend.dto.user.UserUpdate;
 import com.hunglh.backend.entities.Cart;
 import com.hunglh.backend.entities.Role;
 import com.hunglh.backend.entities.Users;
@@ -62,13 +63,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateProfile(String fullName, String email) {
-
+    @Transactional
+    public void updateProfile(UserUpdate userUpdate, String email) {
+        Users oldUser = userRepository.findByEmail(email);
+        oldUser.setFirstName(userUpdate.getFirstName());
+        oldUser.setLastName(userUpdate.getLastName());
+        oldUser.setPhoneNumber(userUpdate.getPhoneNumber());
+        oldUser.setAddress(userUpdate.getAddress());
+        oldUser.setCity(userUpdate.getCity());
+        oldUser.setCountry(userUpdate.getCountry());
+        oldUser.setPostIndex(userUpdate.getPostalCode());
+        userRepository.save(oldUser);
     }
 
     @Override
     public Users getUserByEmail(String email) {
-        return null;
+        return userRepository.findByEmail(email);
     }
 
     @Override

@@ -7,7 +7,7 @@ const Footer = () => {
         <div className="d-flex align-items-center justify-content-center pb-5">
           <div className="col-md-6">
             <p className="mb-3 mb-md-0">Copyright 2023 {" "}
-              <a  href="#" className="text-decoration-underline text-dark fs-5" target="_blank" rel="noreferrer">Le Ha Hung</a>
+              <a  href="" className="text-decoration-underline text-dark fs-5" target="_blank" rel="noreferrer">Le Ha Hung</a>
             </p>
           </div>
         </div>

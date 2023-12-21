@@ -1,6 +1,6 @@
 package com.hunglh.backend.services.impl;
 
-import com.hunglh.backend.dto.RegisterForm;
+import com.hunglh.backend.dto.user.RegisterForm;
 import com.hunglh.backend.dto.user.UserUpdate;
 import com.hunglh.backend.entities.Cart;
 import com.hunglh.backend.entities.Role;

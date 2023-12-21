@@ -1,4 +1,4 @@
-package com.hunglh.backend.dto;
+package com.hunglh.backend.dto.user;
 
 import lombok.Data;
 

@@ -1,7 +1,6 @@
 package com.hunglh.backend.controllers;
 
-import com.hunglh.backend.dto.RegisterForm;
-import com.hunglh.backend.entities.Users;
+import com.hunglh.backend.dto.user.RegisterForm;
 import com.hunglh.backend.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

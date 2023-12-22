@@ -10,12 +10,15 @@ import com.hunglh.backend.repositories.CartRepository;
 import com.hunglh.backend.repositories.UserRepository;
 import com.hunglh.backend.services.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -26,10 +29,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public String createUser(RegisterForm user) {
+    public ResponseEntity<Object> createUser(RegisterForm user) {
         try {
             if (userRepository.findByEmail(user.getEmail()) != null) {
-                throw new RuntimeException("Email already exist");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email already exists");
             }
             List<Role> list = new ArrayList<>();
             list.add(new Role(Roles.USER.name()));
@@ -51,9 +54,9 @@ public class UserServiceImpl implements UserService {
             newUser.setCart(savedCart);
 
             userRepository.save(newUser);
-            return "User created successfully";
+            return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "User created successfully"));
         } catch (Exception e) {
-            return e.getMessage();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", e.getMessage()));
         }
     }
 

@@ -2,6 +2,8 @@
 Training Java spring boot  
 Author: Le Ha Hung
 ## back-end: Java spring boot
-Database: PostgreSQL
+- Java 17
+- Database: MySQL
 ## front-end: ReactJS
-TypeScript
+- JavaScript
+- Redux

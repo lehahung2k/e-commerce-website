@@ -18,7 +18,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody RegisterForm registerForm) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(registerForm));
+    public ResponseEntity<Object> registerUser(@RequestBody RegisterForm registerForm) {
+        return this.userService.createUser(registerForm);
     }
 }

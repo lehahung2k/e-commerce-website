@@ -27,23 +27,6 @@ root.render(
   <BrowserRouter>
     <Provider store={store}>
       <App />
-      {/*<Routes>*/}
-      {/*  /!* for role USER *!/*/}
-      {/*  <Route path="/" element={<Home />} />*/}
-      {/*  <Route path="/product" element={<Products />} />*/}
-      {/*  <Route path="/product/:id" element={<Product />} />*/}
-      {/*  <Route path="/about" element={<AboutPage />} />*/}
-      {/*  <Route path="/contact" element={<ContactPage />} />*/}
-      {/*  <Route path="/cart" element={<Cart />} />*/}
-      {/*  <Route path="/checkout" element={<Checkout />} />*/}
-      {/*  /!* for ALL *!/*/}
-      {/*  <Route path="/login" element={<Login />} />*/}
-      {/*  <Route path="/register" element={<Register />} />*/}
-      {/*  <Route path="*" element={<PageNotFound />} />*/}
-      {/*  <Route path="/product/*" element={<PageNotFound />} />*/}
-      {/*  /!* for role ADMIN *!/*/}
-      {/*  <Route path="/admin" element={<ManageUser />} />*/}
-      {/*</Routes>*/}
     </Provider>
   </BrowserRouter>
 );

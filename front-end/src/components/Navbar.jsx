@@ -4,7 +4,6 @@ import {NavLink, useNavigate,} from "react-router-dom";
 import {logout} from "../redux/action";
 
 const Navbar = () => {
-    const state = useSelector(state => state.handleCart);
     const authState = useSelector(state => state.authReducer);
 
     // Kiểm tra xem authState có tồn tại và isAuthenticated có là true không
@@ -36,23 +35,23 @@ const Navbar = () => {
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav m-auto my-2 text-center">
                         <li className="nav-item">
-                            <NavLink className="nav-link" to="/">Home </NavLink>
+                            <NavLink className="nav-link" to="/">Trang chủ </NavLink>
                         </li>
                         <li className="nav-item">
-                            <NavLink className="nav-link" to="/product">Products</NavLink>
+                            <NavLink className="nav-link" to="/product">Sản phẩm</NavLink>
                         </li>
                         <li className="nav-item">
-                            <NavLink className="nav-link" to="/about">About</NavLink>
+                            <NavLink className="nav-link" to="/about">Giới thiệu</NavLink>
                         </li>
                         <li className="nav-item">
-                            <NavLink className="nav-link" to="/contact">Contact</NavLink>
+                            <NavLink className="nav-link" to="/contact">Liên hệ</NavLink>
                         </li>
                     </ul>
                     <div className="buttons text-center">
                         <ul className="navbar-nav m-auto my-2 text-center">
                             <li className="nav-item">
                                 <NavLink to="/cart" className="btn btn-outline-dark m-2">
-                                    <i className="fa fa-cart-shopping mr-1"></i> Cart ({state.length})
+                                    <i className="fa fa-cart-shopping mr-1"></i> Giỏ hàng
                                 </NavLink>
                             </li>
                             {isAuthenticated ? (
@@ -85,10 +84,10 @@ const Navbar = () => {
                             ) : (
                                 <>
                                     <NavLink to="/register" className="btn btn-outline-dark m-2">
-                                        <i className="fa fa-user-plus mr-1"></i> Register
+                                        <i className="fa fa-user-plus mr-1"></i> Đăng ký
                                     </NavLink>
                                     <NavLink to="/login" className="btn btn-outline-dark m-2">
-                                        <i className="fa fa-sign-in-alt mr-1"></i> Login
+                                        <i className="fa fa-sign-in-alt mr-1"></i> Đăng nhập
                                     </NavLink>
                                 </>
                             )}

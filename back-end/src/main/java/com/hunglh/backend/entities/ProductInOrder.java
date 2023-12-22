@@ -80,7 +80,7 @@ public class ProductInOrder {
         this.productId = products.getProductId();
         this.productName = products.getProductName();
         this.description = products.getDescription();
-        this.filename = products.getFilename();
+        this.filename = products.getFileName();
         this.brand = products.getBrand();
         this.model = products.getModel();
         this.color = products.getColor();

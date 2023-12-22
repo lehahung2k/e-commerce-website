@@ -40,7 +40,7 @@ public class Products {
     private String description;
 
     @Column(name = "filename")
-    private String filename;
+    private String fileName;
 
     @Column(name = "quantity_in_stock")
     private Integer quantityInStock;

@@ -14,6 +14,7 @@ import {
     Register,
     PageNotFound,
     ManageUser,
+    ManageProduct
 } from './pages';
 
 const App = () => {
@@ -36,7 +37,10 @@ const App = () => {
 
             {/* Cho vai trò ADMIN */}
             {userInfo && userInfo.role === 'ADMIN' && (
-                <Route path="/admin" element={<ManageUser/>}/>
+                <>
+                    <Route path="/admin/user" element={<ManageUser/>}/>
+                    <Route path="/admin/product" element={<ManageProduct/>}/>
+                </>
             )}
 
             {/* Nếu không có vai trò nào khớp, chuyển hướng đến trang 404 */}

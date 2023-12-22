@@ -8,4 +8,5 @@ export { default as Login } from './Login';
 export { default as Register } from './Register';
 export { default as Checkout } from './Checkout';
 export { default as PageNotFound } from './PageNotFound';
-export { default as ManageUser } from './ManageUser';
+export { default as ManageUser } from './admin/ManageUser';
+export { default as ManageProduct } from './admin/ManageProduct';

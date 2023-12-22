@@ -49,13 +49,13 @@ const Login = () => {
     <>
       <Navbar />
       <div className="container my-3 py-3">
-        <h1 className="text-center">Login</h1>
+        <h1 className="text-center">ĐĂNG NHẬP</h1>
         <hr />
         <div className="row my-4 h-100">
           <div className="col-md-4 col-lg-4 col-sm-8 mx-auto">
             <form onSubmit={handleLogin}>
               <div className="my-3">
-                <label form="display-4">Email address</label>
+                <label form="display-4">Địa chỉ email</label>
                 <input
                   type="email"
                   className="form-control"
@@ -66,22 +66,22 @@ const Login = () => {
                 />
               </div>
               <div className="my-3">
-                <label form="floatingPassword display-4">Password</label>
+                <label form="floatingPassword display-4">Mật khẩu</label>
                 <input
                   type="password"
                   className="form-control"
                   id="floatingPassword"
-                  placeholder="Password"
+                  placeholder="******"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
               <div className="my-3">
-                <p>New Here? <Link to="/register" className="text-decoration-underline text-info">Register</Link> </p>
+                <p>Chưa có tài khoản? <Link to="/register" className="text-decoration-underline text-info">Đăng ký ngay</Link> </p>
               </div>
               <div className="text-center">
                 <button className="my-2 mx-auto btn btn-dark" type="submit">
-                  Login
+                  Đăng nhập
                 </button>
               </div>
             </form>

@@ -34,7 +34,7 @@ const Products = () => {
       };
     };
 
-    getProducts();
+    getProducts().then(r => console.log(r));
   }, []);
 
   const Loading = () => {

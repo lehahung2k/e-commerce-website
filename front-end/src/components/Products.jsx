@@ -8,8 +8,8 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { Link } from "react-router-dom";
 
 const Products = () => {
-  const [data, setData] = useState([]);
-  const [filter, setFilter] = useState(data);
+  const [data, setData] = useState({ content: [] }); // Ban đầu, data sẽ là một đối tượng có trường content là một mảng
+  const [filter, setFilter] = useState(data.content); // Sử dụng data.content cho việc filter
   const [loading, setLoading] = useState(false);
   let componentMounted = true;
 
@@ -22,10 +22,17 @@ const Products = () => {
   useEffect(() => {
     const getProducts = async () => {
       setLoading(true);
-      const response = await fetch("https://fakestoreapi.com/products/");
-      if (componentMounted) {
-        setData(await response.clone().json());
-        setFilter(await response.json());
+      try {
+        const response = await fetch("http://localhost:1103/api/product");
+        const responseData = await response.json();
+
+        if (componentMounted) {
+          setData(responseData);
+          setFilter(responseData.content);
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error("Error during fetching products:", error);
         setLoading(false);
       }
 
@@ -34,7 +41,7 @@ const Products = () => {
       };
     };
 
-    getProducts().then(r => console.log(r));
+    getProducts();
   }, []);
 
   const Loading = () => {
@@ -72,32 +79,33 @@ const Products = () => {
   const ShowProducts = () => {
     return (
       <>
-        <div className="buttons text-center py-5">
-          <button className="btn btn-outline-dark btn-sm m-2" onClick={() => setFilter(data)}>All</button>
-          <button className="btn btn-outline-dark btn-sm m-2" onClick={() => filterProduct("men's clothing")}>Men's Clothing</button>
+        <div className="buttons text-center py-5 col-12">
+          <button className="btn btn-outline-dark btn-sm m-2" onClick={() => setFilter(data)}>Tất cả</button>
+          <button className="btn btn-outline-dark btn-sm m-2" onClick={() => filterProduct("men's clothing")}>iPhone</button>
           <button className="btn btn-outline-dark btn-sm m-2" onClick={() => filterProduct("women's clothing")}>
-            Women's Clothing
+            Samsung
           </button>
-          <button className="btn btn-outline-dark btn-sm m-2" onClick={() => filterProduct("jewelery")}>Jewelery</button>
-          <button className="btn btn-outline-dark btn-sm m-2" onClick={() => filterProduct("electronics")}>Electronics</button>
+          <button className="btn btn-outline-dark btn-sm m-2" onClick={() => filterProduct("jewelery")}>Oppo</button>
+          <button className="btn btn-outline-dark btn-sm m-2" onClick={() => filterProduct("electronics")}>Xiaomi</button>
+          <button className="btn btn-outline-dark btn-sm m-2" onClick={() => filterProduct("electronics")}>Khác</button>
         </div>
 
         {filter.map((product) => {
           return (
-            <div id={product.id} key={product.id} className="col-md-4 col-sm-6 col-xs-8 col-12 mb-4">
+            <div id={product.productId} key={product.productId} className="col-md-4 col-sm-6 col-xs-8 col-12 mb-4">
               <div className="card text-center h-100" key={product.id}>
                 <img
                   className="card-img-top p-3"
-                  src={product.image}
+                  src={product.filename}
                   alt="Card"
-                  height={300}
+                  width={'80%'}
                 />
                 <div className="card-body">
                   <h5 className="card-title">
-                    {product.title.substring(0, 12)}...
+                    {product.productName}
                   </h5>
                   <p className="card-text">
-                    {product.description.substring(0, 90)}...
+                    {product.description}
                   </p>
                 </div>
                 <ul className="list-group list-group-flush">
@@ -126,7 +134,7 @@ const Products = () => {
       <div className="container my-3 py-3">
         <div className="row">
           <div className="col-12">
-            <h2 className="display-5 text-center">Latest Products</h2>
+            <h2 className="display-5 text-center">Sản phẩm của chúng tôi</h2>
             <hr />
           </div>
         </div>

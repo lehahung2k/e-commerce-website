@@ -23,6 +23,11 @@ const Register = () => {
             return;
         }
 
+        if (!firstName || !lastName || !email || !password || !address || !city || !country || !postalCode || !phoneNumber) {
+            window.alert("Vui lòng nhập đầy đủ thông tin");
+            return;
+        }
+
         try {
             const response = await fetch(`http://localhost:1103/api/user/register`, {
                 method: "POST",
@@ -96,7 +101,7 @@ const Register = () => {
                                     onChange={(e) => setEmail(e.target.value)}
                                 />
                             </div>
-                            <div className="form  my-3">
+                            <div className="form my-3">
                                 <label form="Password">Mật khẩu</label>
                                 <input
                                     type="password"
@@ -106,7 +111,7 @@ const Register = () => {
                                     onChange={(e) => setPassword(e.target.value)}
                                 />
                             </div>
-                            <div className="form  my-3">
+                            <div className="form my-3">
                                 <label form="Password">Xác nhận mật khẩu</label>
                                 <input
                                     type="password"

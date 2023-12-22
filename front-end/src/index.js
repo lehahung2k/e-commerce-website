@@ -3,21 +3,8 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 
-import {
-  Home,
-  Product,
-  Products,
-  AboutPage,
-  ContactPage,
-  Cart,
-  Login,
-  Register,
-  Checkout,
-  PageNotFound,
-  ManageUser
-} from "./pages"
-import {Provider, useSelector} from "react-redux";
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {Provider} from "react-redux";
+import {BrowserRouter} from "react-router-dom";
 import store from "./redux/store";
 import App from "./App";
 

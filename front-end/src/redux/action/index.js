@@ -29,6 +29,7 @@ export const logout = () => {
     Cookies.remove('token');
     Cookies.remove('userInfo');
     // reload windows
+    window.location.reload();
     return {
         type: 'LOGOUT',
     };

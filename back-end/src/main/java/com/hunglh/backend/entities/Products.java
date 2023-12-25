@@ -36,7 +36,8 @@ public class Products {
     @Column(name = "price")
     private BigDecimal price;
 
-    @Column(name = "description")
+    @Lob
+    @Column(name = "description", length = Integer.MAX_VALUE)
     private String description;
 
     @Column(name = "filename")

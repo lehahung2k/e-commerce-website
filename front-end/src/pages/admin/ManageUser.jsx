@@ -1,10 +1,10 @@
 import React from "react";
-import {Footer, Navbar} from "../../components";
+import {AdminNavBar, Footer} from "../../components";
 
 const ManageUser = () => {
   return (
     <>
-        <Navbar />
+        <AdminNavBar />
         <div className="container">
             <h1>Manage User</h1>
         </div>

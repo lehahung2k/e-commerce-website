@@ -1,6 +1,6 @@
 export { default as Home } from './Home';
 export { default as Products } from './Products';
-export { default as Product } from './Product';
+export { default as ProductDetail } from './ProductDetail';
 export { default as AboutPage } from './AboutPage';
 export { default as ContactPage } from './ContactPage';
 export { default as Cart } from './Cart';
@@ -10,3 +10,4 @@ export { default as Checkout } from './Checkout';
 export { default as PageNotFound } from './PageNotFound';
 export { default as ManageUser } from './admin/ManageUser';
 export { default as ManageProduct } from './admin/ManageProduct';
+export { default as AddProduct } from './admin/AddProduct';

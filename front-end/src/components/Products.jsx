@@ -77,21 +77,21 @@ const Products = () => {
     );
   };
 
-  const filterProduct = (brand) => {
-    const updatedList = data.content.filter((item) => item.brand === brand);
-    setFilter(updatedList);
-  };
+  const filterByBrand = async (brand) => {
+    const products = await axios.get(`http://localhost:1103/api/category/${brand}`);
+    setFilter(products.data.page.content);
+  }
 
   const ShowProducts = () => {
     return (
       <>
         <div className="buttons text-center py-5 col-12">
           <button className="btn btn-outline-dark btn-sm m-2" onClick={() => setFilter(data.content)}>Tất cả</button>
-          <button className="btn btn-outline-dark btn-sm m-2" onClick={() => filterProduct(1)}>iPhone</button>
-          <button className="btn btn-outline-dark btn-sm m-2" onClick={() => filterProduct(2)}>Samsung</button>
-          <button className="btn btn-outline-dark btn-sm m-2" onClick={() => filterProduct(4)}>Oppo</button>
-          <button className="btn btn-outline-dark btn-sm m-2" onClick={() => filterProduct(3)}>Xiaomi</button>
-          <button className="btn btn-outline-dark btn-sm m-2" onClick={() => filterProduct(5)}>Khác</button>
+          <button className="btn btn-outline-dark btn-sm m-2" onClick={() => filterByBrand(1)}>iPhone</button>
+          <button className="btn btn-outline-dark btn-sm m-2" onClick={() => filterByBrand(2)}>Samsung</button>
+          <button className="btn btn-outline-dark btn-sm m-2" onClick={() => filterByBrand(4)}>Oppo</button>
+          <button className="btn btn-outline-dark btn-sm m-2" onClick={() => filterByBrand(3)}>Xiaomi</button>
+          <button className="btn btn-outline-dark btn-sm m-2" onClick={() => filterByBrand(5)}>Khác</button>
         </div>
 
         {Array.isArray(filter) ? (
@@ -119,10 +119,10 @@ const Products = () => {
                   </ul>
                   <div className="card-body">
                     <Link to={"/product/" + product.productId} className="btn btn-dark m-1">
-                      Buy Now
+                      Xem ngay
                     </Link>
                     <button className="btn btn-dark m-1" onClick={() => addProduct(product)}>
-                      Add to Cart
+                      Thêm vào giỏ hàng
                     </button>
                   </div>
                 </div>
@@ -151,9 +151,9 @@ const Products = () => {
           {loading ? <Loading /> : <ShowProducts />}
         </div>
         <div className="buttons text-center py-5 col-12">
-          <button className="btn btn-outline-dark btn-sm m-2" onClick={handlePrevPage} disabled={currentPage === 1}>Previous</button>
+          <button className="btn btn-outline-dark btn-sm m-2" onClick={handlePrevPage} disabled={currentPage === 1}>Trước</button>
           <span>{currentPage} / {data.totalPages}</span>
-          <button className="btn btn-outline-dark btn-sm m-2" onClick={handleNextPage} disabled={currentPage === data.totalPages}>Next</button>
+          <button className="btn btn-outline-dark btn-sm m-2" onClick={handleNextPage} disabled={currentPage === data.totalPages}>Tiếp</button>
         </div>
       </div>
     </>

@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Map;
 
 @CrossOrigin
 @RestController
@@ -22,10 +23,10 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping("/product")
-    public ResponseEntity<Page<Products>> findAll(@RequestParam(value = "page", defaultValue = "1") Integer page,
-                                  @RequestParam(value = "size", defaultValue = "3") Integer size) {
+    public Page<Products> findAll(@RequestParam(value = "page", defaultValue = "1") Integer page,
+                                  @RequestParam(value = "size", defaultValue = "8") Integer size) {
         PageRequest request = PageRequest.of(page - 1, size);
-        return ResponseEntity.status(HttpStatus.OK).body(productService.findAll(request));
+        return productService.findAll(request);
     }
 
     @GetMapping("/product/{productId}")

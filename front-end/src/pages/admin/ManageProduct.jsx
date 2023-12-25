@@ -71,7 +71,7 @@ const ManageUser = () => {
                     <td>{product.quantityInStock}</td>
                     <td>{product.color}</td>
                     <td>
-                      {product.quantityInStock > 0 ? (
+                      {product.productStatus === 0 ? (
                         <span className="text-success">Còn hàng</span>
                       ) : (
                         <span className="text-danger">Hết hàng</span>

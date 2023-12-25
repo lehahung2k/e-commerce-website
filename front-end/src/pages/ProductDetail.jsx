@@ -8,7 +8,7 @@ import axios from "axios";
 
 import { Footer, Navbar } from "../components";
 
-const Product = () => {
+const ProductDetail = () => {
   const { id } = useParams();
   const [product, setProduct] = useState([]);
   const [brand, setBrand] = useState([]); // [
@@ -209,4 +209,4 @@ const Product = () => {
   );
 };
 
-export default Product;
+export default ProductDetail;

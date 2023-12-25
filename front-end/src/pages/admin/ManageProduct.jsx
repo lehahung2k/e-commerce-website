@@ -59,10 +59,10 @@ const ManageUser = () => {
             </thead>
             <tbody>
             {Array.isArray(products) ? (
-                products.map((product) => {
+                products.map((product, index) => {
                       return (
                           <tr key={product.productId}>
-                            <td>{product.productId}</td>
+                            <td>{index+1}</td>
                             <td>{product.productName}</td>
                             <td>${product.price}</td>
                             {/* Thêm các cột khác tương ứng */}

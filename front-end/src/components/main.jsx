@@ -14,12 +14,10 @@ const Home = () => {
           />
           <div className="card-img-overlay d-flex align-items-center">
             <div className="container">
-              <h5 className="card-title fs-1 text fw-lighter">Minh Nguyễn Store</h5>
-              <p className="card-text fs-5 d-none d-sm-block ">
-                This is a wider card with supporting text below as a natural
-                lead-in to additional content. This content is a little bit
-                longer.
-              </p>
+              <h3 className="card-title fs-1 text fw-lighter">Minh Nguyễn Store</h3>
+              <h5 className="card-text fs-5 d-none d-sm-block ">
+                Uy tín - Chất lượng - Tận tình.
+              </h5>
             </div>
           </div>
         </div>

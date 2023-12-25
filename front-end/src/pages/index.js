@@ -11,3 +11,4 @@ export { default as PageNotFound } from './PageNotFound';
 export { default as ManageUser } from './admin/ManageUser';
 export { default as ManageProduct } from './admin/ManageProduct';
 export { default as AddProduct } from './admin/AddProduct';
+export { default as EditProduct } from './admin/EditProduct';

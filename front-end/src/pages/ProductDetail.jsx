@@ -100,16 +100,28 @@ const ProductDetail = () => {
                 <li className="list-group-item lead">Pin: {product.batteryCapacity} mah</li>
                 <li className="list-group-item lead">Màu sắc: {product.color}</li>
               </ul>
+              <p className="lead border"></p>
+              {product.quantityInStock > 0 ? (
+                <p className="lead text-success">Còn hàng</p>
+              ) : (
+                <p className="lead text-danger">Hết hàng</p>
+              )}
               <h3 className="display-6  my-4">Giá bán: ${product.price}</h3>
               <p className="lead">Chi tiết sản phẩm: {product.description}</p>
-              <button
-                className="btn btn-outline-dark"
-                onClick={() => addProduct(product)}
-              >
-                Add to Cart
-              </button>
+              {product.productStatus === 0 ? (
+                <button
+                  className="btn btn-dark mx-3"
+                  onClick={() => addProduct(product)}
+                >
+                  Thêm vào giỏ hàng
+                </button>
+              ) : (
+                <button className="btn btn-dark mx-3" disabled>
+                  Thêm vào giỏ hàng
+                </button>
+              )}
               <Link to="/cart" className="btn btn-dark mx-3">
-                Go to Cart
+                Đi đến giỏ hàng
               </Link>
             </div>
           </div>
@@ -193,7 +205,7 @@ const ProductDetail = () => {
         <div className="row">{loading ? <Loading /> : <ShowProduct />}</div>
         <div className="row my-5 py-5">
           <div className="d-none d-md-block">
-          <h2 className="">Sản phẩm tương tự</h2>
+            <h2 className="">Sản phẩm tương tự</h2>
             <Marquee
               pauseOnHover={true}
               pauseOnClick={true}

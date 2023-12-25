@@ -5,7 +5,7 @@ const AboutPage = () => {
     <>
       <Navbar />
       <div className="container my-3 py-3">
-        <h1 className="text-center">About Us</h1>
+        <h1 className="text-center">Giới thiệu</h1>
         <hr />
         <p className="lead text-center">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum
@@ -23,37 +23,37 @@ const AboutPage = () => {
           dignissimos blanditiis excepturi harum numquam vel nihil? Ipsum
         </p>
 
-        <h2 className="text-center py-4">Our Products</h2>
+        <h2 className="text-center py-4">Sản phẩm của chúng tôi</h2>
         <div className="row">
           <div className="col-md-3 col-sm-6 mb-3 px-3">
             <div className="card h-100">
-              <img className="card-img-top img-fluid" src="https://images.pexels.com/photos/298863/pexels-photo-298863.jpeg?auto=compress&cs=tinysrgb&w=600" alt="" height={160} />
+              <img className="card-img-top img-fluid" src="https://fptshop.com.vn/uploads/originals/2021/9/14/637672394339284462_maxresdefault.jpg" alt="" height={160} />
               <div className="card-body">
-                <h5 className="card-title text-center">Mens's Clothing</h5>
+                <h5 className="card-title text-center">iPhone</h5>
               </div>
             </div>
           </div>
           <div className="col-md-3 col-sm-6 mb-3 px-3">
             <div className="card h-100">
-              <img className="card-img-top img-fluid" src="https://images.pexels.com/photos/7679720/pexels-photo-7679720.jpeg?auto=compress&cs=tinysrgb&w=600" alt="" height={160} />
+              <img className="card-img-top img-fluid" src="https://www.megabites.com.ph/wp-content/uploads/2018/07/Samsung.jpg" alt="" height={160} />
               <div className="card-body">
-                <h5 className="card-title text-center">Women's Clothing</h5>
+                <h5 className="card-title text-center">Samsung</h5>
               </div>
             </div>
           </div>
           <div className="col-md-3 col-sm-6 mb-3 px-3">
             <div className="card h-100">
-              <img className="card-img-top img-fluid" src="https://images.pexels.com/photos/1927259/pexels-photo-1927259.jpeg?auto=compress&cs=tinysrgb&w=600" alt="" height={160} />
+              <img className="card-img-top img-fluid" src="https://cdn.tgdd.vn/Files/2019/12/31/1229326/oppo-logo_879x494-800-resize.jpg" alt="" height={160} />
               <div className="card-body">
-                <h5 className="card-title text-center">Jewelery</h5>
+                <h5 className="card-title text-center">Oppo</h5>
               </div>
             </div>
           </div>
           <div className="col-md-3 col-sm-6 mb-3 px-3">
             <div className="card h-100">
-              <img className="card-img-top img-fluid" src="https://images.pexels.com/photos/356056/pexels-photo-356056.jpeg?auto=compress&cs=tinysrgb&w=600" alt="" height={160} />
+              <img className="card-img-top img-fluid" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0LaYJgeNTP4jf2IPt0Zkyggre-EpnbgFQ2w&usqp=CAU" alt="" height={160} />
               <div className="card-body">
-                <h5 className="card-title text-center">Electronics</h5>
+                <h5 className="card-title text-center">Và vô số dòng điện thoại khác</h5>
               </div>
             </div>
           </div>

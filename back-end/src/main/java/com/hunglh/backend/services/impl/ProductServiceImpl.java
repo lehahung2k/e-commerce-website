@@ -131,17 +131,32 @@ public class ProductServiceImpl implements ProductService {
     public Products update(Products product) {
         try {
             productBrandService.findByBrandType(product.getBrand());
-            if (Objects.isNull(product.getProductId())) throw new RuntimeException("Product not found");
             if (product.getProductStatus() > 1 || product.getProductStatus() < 0) throw new RuntimeException("Product status error");
-            return productRepository.save(product);
+            productRepository.save(product);
+            return product;
         } catch (Exception e) {
             throw new RuntimeException("Product not found");
         }
     }
 
     @Override
+    @Transactional
     public Products save(Products product) {
-        return update(product);
+        try {
+            Products existingProduct = findSimilarProduct(product);
+
+            if (existingProduct != null) {
+                existingProduct.setQuantityInStock(existingProduct.getQuantityInStock() + product.getQuantityInStock());
+                productRepository.save(existingProduct);
+                return existingProduct;
+            }
+            if (product.getQuantityInStock() == 0) product.setProductStatus(ProductStatusEnum.DOWN.getCode());
+            product.setProductStatus(ProductStatusEnum.UP.getCode());
+
+            return productRepository.save(product);
+        } catch (Exception e) {
+            throw new RuntimeException("Error while creating product" + e.getMessage(), e);
+        }
     }
 
     @Override
@@ -153,5 +168,15 @@ public class ProductServiceImpl implements ProductService {
         } catch (Exception e) {
             throw new RuntimeException("Product not found");
         }
+    }
+
+    private Products findSimilarProduct(Products product) {
+        // Thực hiện truy vấn để tìm sản phẩm có các trường tương tự
+        return productRepository.findByProductNameAndModelAndColorAndStorageCapacity(
+                product.getProductName(),
+                product.getModel(),
+                product.getColor(),
+                product.getStorageCapacity()
+        );
     }
 }

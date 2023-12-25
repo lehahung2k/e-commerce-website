@@ -64,12 +64,25 @@ const EditProduct = () => {
                 ...product,
                 productName: formData.productName,
                 price: parseFloat(formData.price), // Chuyển giá về kiểu số
+                brand: parseInt(formData.brand), // Chuyển brand về kiểu số
+                model: formData.model,
+                description: formData.description,
+                fileName: formData.fileName,
+                quantityInStock: parseInt(formData.quantityInStock),
+                color: formData.color,
+                storageCapacity: formData.storageCapacity,
+                screenSize: formData.screenSize,
+                ram: formData.ram,
+                cpu: formData.cpu,
+                os: formData.os,
+                batteryCapacity: formData.batteryCapacity,
+                productStatus: parseInt(formData.productStatus)
                 // Thêm các trường khác cần thiết
             };
             // Gửi yêu cầu cập nhật đến server
             await axios.put(`http://localhost:1103/api/seller/product/${id}/edit`, updatedProduct);
 
-            window.alert("Thêm sản phẩm mới thành công");
+            window.alert("Cập nhật sản phẩm thành công");
             window.location.href = "/admin/product";
 
         } catch (error) {
@@ -142,7 +155,7 @@ const EditProduct = () => {
                         </div>
                         <div className='col-6'>
                             <div className="form-group">
-                                <label htmlFor="screenSize">Kích thước màn hình</label>
+                                <label htmlFor="screenSize">Màn hình</label>
                                 <input type="text" className="form-control" id="screenSize" value={formData.screenSize} onChange={(e) => setFormData({ ...formData, screenSize: e.target.value })} />
                             </div>
                         </div>

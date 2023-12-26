@@ -35,6 +35,22 @@ const ManageUser = () => {
     }
   };
 
+  const handleDeleteProduct = async (productId) => {
+    const userConfirmed = window.confirm("Bạn có chắc chắn muốn xoá sản phẩm này?");
+    if (userConfirmed) {
+      try {
+        const response = await axios.delete(`http://localhost:1103/api/seller/product/${productId}/delete`);
+        console.log("Product deleted successfully:", response.data);
+
+        // Cập nhật danh sách sản phẩm sau khi xoá
+        const updatedProducts = products.filter((product) => product.productId !== productId);
+        setProducts(updatedProducts);
+      } catch (error) {
+        console.error("Error deleting product:", error);
+      }
+    }
+  };
+
   return (
     <>
       <AdminNavBar />
@@ -84,7 +100,10 @@ const ManageUser = () => {
                         Chỉnh sửa
                       </Link>
                       {/* Nút để xóa sản phẩm */}
-                      <button className="btn btn-danger btn-sm ml-2">
+                      <button
+                        className="btn btn-danger btn-sm ml-2"
+                        onClick={() => handleDeleteProduct(product.productId)}
+                      >
                         Xóa
                       </button>
                     </td>

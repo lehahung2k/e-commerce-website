@@ -196,7 +196,7 @@ const AddProduct = () => {
               </div>
               <div className="col-md-6">
                 <div className="mb-3">
-                  <label htmlFor="screenSize" className="form-label">Kích thước màn hình</label>
+                  <label htmlFor="screenSize" className="form-label">Màn hình</label>
                   <input
                       type="text"
                       className="form-control"

@@ -19,7 +19,7 @@ const NavBar = () => {
     // Gọi action logout khi người dùng đăng xuất
     dispatch(logout());
     // Chuyển hướng về trang chủ
-    navigate("/");
+    window.location.href = "/";
   };
 
   return (

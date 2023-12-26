@@ -41,7 +41,7 @@ public class ProductController {
     }
 
     @PutMapping("/seller/product/{productId}/edit")
-    public ResponseEntity editProduct(@PathVariable("productId") Long productId,
+    public ResponseEntity<Object> editProduct(@PathVariable("productId") Long productId,
                                @Valid @RequestBody Products product,
                                BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -51,7 +51,7 @@ public class ProductController {
             return ResponseEntity.badRequest().body("Id Not Matched");
         }
 
-        return ResponseEntity.ok(productService.update(product));
+        return ResponseEntity.ok(Map.of("message", productService.update(product)));
     }
 
     @DeleteMapping("/seller/product/{productId}/delete")

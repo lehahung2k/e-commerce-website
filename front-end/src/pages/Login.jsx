@@ -43,7 +43,7 @@ const Login = () => {
 
   useEffect(() => {
     if (userInfo.role === 'ADMIN') {
-      navigate('/admin/user');
+      navigate('/admin/product');
     } else if (userInfo.role === 'USER') {
       navigate('/');
     }

@@ -15,7 +15,8 @@ import {
   PageNotFound,
   ManageUser,
   ManageProduct,
-  AddProduct
+  AddProduct,
+  EditProduct
 } from './pages';
 
 const App = () => {
@@ -42,6 +43,7 @@ const App = () => {
                     <Route path="/admin/user" element={<ManageUser/>}/>
                     <Route path="/admin/product" element={<ManageProduct/>}/>
                     <Route path={"/admin/add-product"} element={<AddProduct/>}/>
+                    <Route path={"/admin/edit-product/:id"} element={<EditProduct/>}/>
                 </>
             )}
 

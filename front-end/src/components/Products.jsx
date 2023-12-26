@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { addCart } from "../redux/action";
 
 import Skeleton from "react-loading-skeleton";
@@ -14,6 +14,9 @@ const Products = () => {
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(8);
+
+  const authState = useSelector(state => state.authReducer);
+  const isAuthenticated = authState && authState.isAuthenticated;
 
   const dispatch = useDispatch();
 
@@ -121,9 +124,16 @@ const Products = () => {
                     <Link to={"/product/" + product.productId} className="btn btn-dark m-1">
                       Xem ngay
                     </Link>
-                    <button className="btn btn-dark m-1" onClick={() => addProduct(product)}>
-                      Thêm vào giỏ hàng
-                    </button>
+                    {isAuthenticated ? (
+                      <button className="btn btn-dark m-1" onClick={() => addProduct(product)}>
+                        Thêm vào giỏ hàng
+                      </button>
+                      ) : (
+                        <Link to="/login" className="btn btn-dark m-1">
+                          Thêm vào giỏ hàng
+                        </Link>
+                      )
+                    }
                   </div>
                 </div>
               </div>

@@ -17,4 +17,6 @@ public interface ProductRepository extends JpaRepository<Products, Long> {
 
     Products findByProductNameAndModelAndColorAndStorageCapacity(String productName, String model, String color, String storageCapacity);
 
+    Page<Products> findByProductNameContainingOrModelContaining(String productName, String model, Pageable pageable);
+
 }

@@ -9,11 +9,18 @@ const ManageUser = () => {
   const [products, setProducts] = useState(data.content);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(8);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const getProducts = async () => {
       try {
-        const response = await axios.get(`http://localhost:1103/api/product?page=${currentPage}&size=${pageSize}`);
+        let apiUrl = 'http://localhost:1103/api/product';
+        if (searchTerm) {
+          apiUrl += `/search?keyword=${searchTerm}`;
+        } else {
+          apiUrl += `?page=${currentPage}&size=${pageSize}`;
+        }
+        const response = await axios.get(apiUrl);
         setData(response.data);
         setProducts(response.data.content);
       } catch (error) {
@@ -21,7 +28,7 @@ const ManageUser = () => {
       }
     };
     getProducts();
-  }, [currentPage, pageSize]);
+  }, [currentPage, pageSize, searchTerm]);
 
   const handleNextPage = () => {
     if (currentPage < data.totalPages) {
@@ -35,16 +42,59 @@ const ManageUser = () => {
     }
   };
 
+  const handleSearch = async () => {
+    try {
+      const response = await axios.get(`http://localhost:1103/api/product/search?keyword=${searchTerm}&page=${currentPage}&size=${pageSize}`);
+      setData(response.data);
+      setProducts(response.data.content);
+    } catch (error) {
+      console.error("Error during searching products:", error);
+    }
+  };
+
+  const handleDeleteProduct = async (productId) => {
+    const userConfirmed = window.confirm("Bạn có chắc chắn muốn xoá sản phẩm này?");
+    if (userConfirmed) {
+      try {
+        const response = await axios.delete(`http://localhost:1103/api/seller/product/${productId}/delete`);
+        console.log("Product deleted successfully:", response.data);
+
+        // Cập nhật danh sách sản phẩm sau khi xoá
+        const updatedProducts = products.filter((product) => product.productId !== productId);
+        setProducts(updatedProducts);
+      } catch (error) {
+        console.error("Error deleting product:", error);
+      }
+    }
+  };
+
   return (
     <>
       <AdminNavBar />
       <div className="container">
         <h2 className="my-4">Quản lý Sản phẩm</h2>
 
-        {/* Nút thêm mới sản phẩm */}
-        <Link to="/admin/add-product" className="btn btn-primary mb-3">
-          Thêm mới sản phẩm
-        </Link>
+        <div className={'row'}>
+          <div className={'col-6'}>
+            <Link to="/admin/add-product" className="btn btn-primary mb-3">
+              Thêm mới sản phẩm
+            </Link>
+          </div>
+          <div className="input-group mb-3 col-6">
+            <input
+                type="text"
+                className="form-control"
+                placeholder="Tìm kiếm sản phẩm..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <div className="input-group-append">
+              <button className="btn btn-primary" type="button" onClick={handleSearch}>
+                Tìm kiếm
+              </button>
+            </div>
+          </div>
+        </div>
 
         {/* Bảng hiển thị danh sách sản phẩm */}
         <table className="table">
@@ -84,7 +134,10 @@ const ManageUser = () => {
                         Chỉnh sửa
                       </Link>
                       {/* Nút để xóa sản phẩm */}
-                      <button className="btn btn-danger btn-sm ml-2">
+                      <button
+                        className="btn btn-danger btn-sm ml-2"
+                        onClick={() => handleDeleteProduct(product.productId)}
+                      >
                         Xóa
                       </button>
                     </td>

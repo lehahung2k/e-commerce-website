@@ -93,7 +93,7 @@ const EditProduct = () => {
     return (
         <>
             <AdminNavBar />
-            <div className="container">
+            <div className="container my-3 py-3">
                 <h2 className="my-4">Chỉnh sửa Sản phẩm</h2>
                 <form>
                     <div className='row'>

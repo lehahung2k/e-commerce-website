@@ -16,7 +16,8 @@ import {
   ManageUser,
   ManageProduct,
   AddProduct,
-  EditProduct
+  EditProduct,
+  ManageOrder
 } from './pages';
 
 const App = () => {
@@ -44,6 +45,7 @@ const App = () => {
                     <Route path="/admin/product" element={<ManageProduct/>}/>
                     <Route path={"/admin/add-product"} element={<AddProduct/>}/>
                     <Route path={"/admin/edit-product/:id"} element={<EditProduct/>}/>
+                    <Route path={"/admin/manage-order"} element={<ManageOrder/>}/>
                 </>
             )}
 

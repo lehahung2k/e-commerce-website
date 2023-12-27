@@ -85,15 +85,14 @@ const Cart = () => {
                                         // className="w-100"
                                         alt={item.productName}
                                         width={100}
-                                        height={75}
                                     />
                                   </div>
                                 </div>
 
                                 <div className="col-lg-5 col-md-6">
-                                  <p>
+                                  <Link to={`/product/${item.productId}`}>
                                     <strong>{item.productName}</strong>
-                                  </p>
+                                  </Link>
                                   {/* <p>Color: blue</p>
                               <p>Size: M</p> */}
                                 </div>
@@ -184,7 +183,7 @@ const Cart = () => {
       <>
         <Navbar/>
         <div className="container my-3 py-3">
-          <h1 className="text-center">Cart</h1>
+          <h1 className="text-center">Giỏ hàng</h1>
           <hr/>
           {state.length > 0 ? <ShowCart/> : <EmptyCart/>}
         </div>

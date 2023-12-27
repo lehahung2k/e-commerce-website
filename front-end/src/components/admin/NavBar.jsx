@@ -47,7 +47,7 @@ const NavBar = () => {
           <div className="buttons text-center">
             <ul className="navbar-nav m-auto my-2 text-center">
               <li className="nav-item">
-                <NavLink to="/cart" className="btn btn-outline-dark m-2">
+                <NavLink to="/admin/manage-order" className="btn btn-outline-dark m-2">
                   <i className="fa fa-cart-shopping mr-1"></i> Đơn mua
                 </NavLink>
               </li>

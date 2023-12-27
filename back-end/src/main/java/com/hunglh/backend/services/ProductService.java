@@ -29,6 +29,8 @@ public interface ProductService {
 
     Products save(Products product);
 
+    Page<Products> searchProducts(String keyword, Pageable pageable);
+
     void delete(Long productId);
 
 }

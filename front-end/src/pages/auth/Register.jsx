@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { Footer, Navbar } from "../components";
+import { Footer, Navbar } from "../../components";
 import { Link } from 'react-router-dom';
 const Register = () => {
     const [firstName, setFirstName] = useState("");

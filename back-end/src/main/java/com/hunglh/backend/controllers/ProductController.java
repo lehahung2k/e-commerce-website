@@ -6,6 +6,8 @@ import com.hunglh.backend.services.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -54,8 +56,16 @@ public class ProductController {
         return ResponseEntity.ok(Map.of("message", productService.update(product)));
     }
 
+    @GetMapping("/product/search")
+    public ResponseEntity<Page<Products>> searchProducts(
+            @RequestParam String keyword,
+            @PageableDefault(size = 8, sort = "productId") Pageable pageable) {
+        Page<Products> searchResult = productService.searchProducts(keyword, pageable);
+        return ResponseEntity.ok(searchResult);
+    }
+
     @DeleteMapping("/seller/product/{productId}/delete")
-    public ResponseEntity delete(@PathVariable("productId") Long productId) {
+    public ResponseEntity<Object> delete(@PathVariable("productId") Long productId) {
         productService.delete(productId);
         return ResponseEntity.ok().build();
     }

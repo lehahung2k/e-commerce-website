@@ -52,7 +52,7 @@ const AddProduct = () => {
   return (
       <>
         <AdminNavBar/>
-        <div className="container">
+        <div className="container my-3 py-3">
           <h2 className="my-4">Thêm mới sản phẩm</h2>
 
           {/* Form thêm mới sản phẩm */}

@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
-import {Footer, Navbar} from "../components";
+import {Footer, Navbar} from "../../components";
 import {useDispatch, useSelector} from "react-redux";
-import {login} from "../redux/action";
+import {login} from "../../redux/action";
 
 const Login = () => {
   const dispatch = useDispatch();

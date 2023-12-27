@@ -160,6 +160,15 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Page<Products> searchProducts(String keyword, Pageable pageable) {
+        try {
+            return productRepository.findByProductNameContainingOrModelContaining(keyword, keyword, pageable);
+        } catch (Exception e) {
+            throw new RuntimeException("Error while searching products", e);
+        }
+    }
+
+    @Override
     public void delete(Long productId) {
         try{
             Products product = findOne(productId);

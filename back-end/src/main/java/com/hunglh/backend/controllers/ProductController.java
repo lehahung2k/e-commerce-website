@@ -1,5 +1,6 @@
 package com.hunglh.backend.controllers;
 
+import com.hunglh.backend.dto.product.NewProduct;
 import com.hunglh.backend.entities.Products;
 import com.hunglh.backend.services.ProductBrandService;
 import com.hunglh.backend.services.ProductService;
@@ -37,7 +38,7 @@ public class ProductController {
     }
 
     @PostMapping("/seller/product/new")
-    public ResponseEntity<Products> addNewProduct(@Valid @RequestBody Products product,
+    public ResponseEntity<Products> addNewProduct(@Valid @ModelAttribute NewProduct product,
                                  BindingResult bindingResult) {
         return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(product));
     }

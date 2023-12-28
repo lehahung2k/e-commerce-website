@@ -1,14 +1,29 @@
 package com.hunglh.backend.dto.product;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
+import java.math.BigDecimal;
 
+@Getter
+@Setter
 @Data
 public class NewProduct {
-    @Min(value = 1)
+    private String productName;
+    private Integer brand;
+    private String model;
+    private BigDecimal price;
+    private String description;
+    private MultipartFile imgFile;
+//    private String fileName;
     private Integer quantityInStock;
-    @NotEmpty
-    private Long productId;
+    private String color;
+    private String storageCapacity;
+    private String screenSize;
+    private String ram;
+    private String cpu;
+    private String os;
+    private String batteryCapacity;
 }

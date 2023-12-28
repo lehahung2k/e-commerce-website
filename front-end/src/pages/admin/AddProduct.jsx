@@ -10,7 +10,7 @@ const AddProduct = () => {
     brand: "",
     model: "",
     description: "",
-    fileName: "",
+    imgFile: null,
     quantityInStock: 0,
     color: "",
     storageCapacity: "",
@@ -29,15 +29,26 @@ const AddProduct = () => {
     }));
   };
 
-  const navigate = useNavigate();
+  const uploadImg = (e) => {
+    const file = e.target.files[0];
+    setFormData((prevData) => ({
+      ...prevData,
+      imgFile: file
+    }));
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       // Gửi request để thêm mới sản phẩm
-      const response = await axios.post("http://localhost:1103/api/seller/product/new", formData);
-
+      console.log(formData);
+      const response = await axios.post("http://localhost:1103/api/seller/product/new", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      
       // Xử lý kết quả thành công (nếu cần)
       console.log("Product added successfully:", response.data);
 
@@ -50,8 +61,8 @@ const AddProduct = () => {
   };
 
   return (
-      <>
-        <AdminNavBar/>
+    <>
+      <AdminNavBar/>
         <div className="container my-3 py-3">
           <h2 className="my-4">Thêm mới sản phẩm</h2>
 
@@ -276,15 +287,13 @@ const AddProduct = () => {
             <div className="row">
                 <div className="col-md-12">
                     <div className="mb-3">
-                    <label htmlFor="fileName" className="form-label">Ảnh sản phẩm</label>
+                    <label htmlFor="imgFile" className="form-label">Ảnh sản phẩm</label>
                     <input
-                        type="text"
+                        type="file"
                         className="form-control"
-                        id="fileName"
-                        name="fileName"
-                        value={formData.fileName}
-                        onChange={handleChange}
-                        required
+                        id="imgFile"
+                        name="imgFile"
+                        onChange={uploadImg}
                     />
                     </div>
                 </div>
@@ -294,8 +303,8 @@ const AddProduct = () => {
             <Link to="/admin/product" className="btn btn-secondary ml-2">Quay lại</Link>
           </form>
         </div>
-        <Footer/>
-      </>
+      <Footer/>
+    </>
   );
 };
 

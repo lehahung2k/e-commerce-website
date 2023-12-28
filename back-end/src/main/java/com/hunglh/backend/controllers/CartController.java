@@ -1,6 +1,6 @@
 package com.hunglh.backend.controllers;
 
-import com.hunglh.backend.dto.product.NewProduct;
+import com.hunglh.backend.dto.product.NewProductCart;
 import com.hunglh.backend.entities.Cart;
 import com.hunglh.backend.entities.ProductInOrder;
 import com.hunglh.backend.entities.Users;
@@ -46,7 +46,7 @@ public class CartController {
     }
 
     @PostMapping("/add")
-    public boolean addToCart(@RequestBody NewProduct newProduct, Principal principal) {
+    public boolean addToCart(@RequestBody NewProductCart newProduct, Principal principal) {
         var productInfo = productService.findOne(newProduct.getProductId());
         try {
             mergeCart(Collections.singleton(new ProductInOrder(productInfo, newProduct.getQuantityInStock())), principal);

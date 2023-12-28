@@ -40,3 +40,6 @@ build/
 
 # Ignore environment configuration files
 .env
+
+# Ignore static resources
+src/main/resources/static/images/

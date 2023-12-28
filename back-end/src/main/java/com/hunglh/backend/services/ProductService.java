@@ -1,5 +1,6 @@
 package com.hunglh.backend.services;
 
+import com.hunglh.backend.dto.product.NewProduct;
 import com.hunglh.backend.entities.Products;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,7 +28,7 @@ public interface ProductService {
 
     Products update(Products product);
 
-    Products save(Products product);
+    Products save(NewProduct newProduct);
 
     Page<Products> searchProducts(String keyword, Pageable pageable);
 

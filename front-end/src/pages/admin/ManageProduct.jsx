@@ -8,7 +8,7 @@ const ManageUser = () => {
   const [data, setData] = useState([]);
   const [products, setProducts] = useState(data.content);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(8);
+  const [pageSize] = useState(8);
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
@@ -21,8 +21,8 @@ const ManageUser = () => {
           apiUrl += `?page=${currentPage}&size=${pageSize}`;
         }
         const response = await axios.get(apiUrl);
-        setData(response.data);
-        setProducts(response.data.content);
+        setData(response.data.products);
+        setProducts(response.data.products.content);
       } catch (error) {
         console.error("Error during fetching products:", error);
       }

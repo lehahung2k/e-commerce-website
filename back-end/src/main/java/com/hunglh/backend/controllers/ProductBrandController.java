@@ -8,6 +8,7 @@ import com.hunglh.backend.services.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -33,7 +34,7 @@ public class ProductBrandController {
 
         ProductBrand brand = brandService.findByBrandType(brandType);
         PageRequest request = PageRequest.of(page - 1, size);
-        Page<Products> productInBrand = productService.findAllInBrand(brandType, request);
+        ResponseEntity<Object> productInBrand = productService.findAllInBrand(brandType, request);
         var tmp = new BrandPage("", productInBrand);
         tmp.setBrandName(brand.getBrandName());
         return tmp;

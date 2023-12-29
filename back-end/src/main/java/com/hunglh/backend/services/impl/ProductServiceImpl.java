@@ -9,6 +9,8 @@ import com.hunglh.backend.services.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,6 +19,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -29,11 +32,13 @@ public class ProductServiceImpl implements ProductService {
     public static String storeImageUrl = "http://localhost:1103/api" + "/static/images/";
 
     @Override
-    public Products findOne(Long productId) {
+    public ResponseEntity<Object> findOne(Long productId) {
         try {
-            return productRepository.findByProductId(productId);
+            Products product = productRepository.findByProductId(productId);
+            return ResponseEntity.status(HttpStatus.OK).body(Map.of("mobile", product));
         } catch (Exception e) {
-            throw new RuntimeException("Product not found");
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", e.getMessage()));
         }
     }
 
@@ -47,20 +52,31 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Products> findAll(Pageable pageable) {
+    public ResponseEntity<Object> findAll(Pageable pageable) {
         try {
-            return productRepository.findAllByOrderByProductId(pageable);
+            Page<Products> products = productRepository.findAllByOrderByProductId(pageable);
+            System.out.println(products.getTotalElements());
+            return ResponseEntity.status(HttpStatus.OK).body(Map.of(
+                    "products", products,
+                    "totalPages", products.getTotalPages(),
+                    "totalElements", products.getTotalElements()
+            ));
         } catch (Exception e) {
-            throw new RuntimeException("Products not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", e.getMessage()));
         }
     }
 
     @Override
-    public Page<Products> findAllInBrand(Integer brandType, Pageable pageable) {
+    public ResponseEntity<Object> findAllInBrand(Integer brandType, Pageable pageable) {
         try {
-            return productRepository.findAllByBrandOrderByProductIdAsc(brandType, pageable);
+            Page<Products> products = productRepository.findAllByBrandOrderByProductIdAsc(brandType, pageable);
+            return ResponseEntity.status(HttpStatus.OK).body(Map.of(
+                    "products", products,
+                    "totalPages", products.getTotalPages(),
+                    "totalElements", products.getTotalElements()
+            ));
         } catch (Exception e) {
-            throw new RuntimeException("Products not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", e.getMessage()));
         }
     }
 
@@ -68,7 +84,7 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public void increaseStock(Long productId, int amount) {
         try {
-            Products product = findOne(productId);
+            Products product = productRepository.findByProductId(productId);
             if (product == null) throw new RuntimeException("Product not found");
 
             int update = product.getQuantityInStock() + amount;
@@ -83,7 +99,7 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public void decreaseStock(Long productId, int amount) {
         try {
-            Products product = findOne(productId);
+            Products product = productRepository.findByProductId(productId);
             if (product == null) throw new RuntimeException("Product not found");
 
             int update = product.getQuantityInStock() - amount;
@@ -100,7 +116,7 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public Products offSale(Long productId) {
         try {
-            Products product = findOne(productId);
+            Products product = productRepository.findByProductId(productId);
             if (product == null) throw new RuntimeException("Product not found");
 
             if (product.getProductStatus().equals(ProductStatusEnum.DOWN.getCode())) {
@@ -119,7 +135,7 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public Products onSale(Long productId) {
         try {
-            Products product = findOne(productId);
+            Products product = productRepository.findByProductId(productId);
             if (product == null) throw new RuntimeException("Product not found");
 
             if (product.getProductStatus().equals(ProductStatusEnum.UP.getCode())) {
@@ -201,7 +217,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void delete(Long productId) {
         try{
-            Products product = findOne(productId);
+            Products product = productRepository.findByProductId(productId);
             if (product == null) throw new RuntimeException("Product not found");
             // Xoá hình ảnh từ thư mục static/images
             String fileName = product.getFileName();

@@ -28,13 +28,13 @@ const ProductDetail = () => {
       setLoading2(true);
       try {
         const response = await axios.get(`http://localhost:1103/api/product/${id}`);
-        const data = response.data;
+        const data = response.data.mobile;
         setProduct(data);
         setLoading(false);
         const response2 = await axios.get(`http://localhost:1103/api/category/${data.brand}`);
         const data2 = await response2.data;
         setBrand(data2);
-        setSimilarProducts(data2.page.content);
+        setSimilarProducts(data2.page.body.products.content);
         setLoading2(false);
       }
       catch (error) {
@@ -160,7 +160,7 @@ const ProductDetail = () => {
           <div className="d-flex">
             {similarProducts.map((item) => {
               return (
-                <div key={item.id} className="card mx-4 text-center">
+                <div key={item.productId} className="card mx-4 text-center">
                   <img
                     className="card-img-top p-3"
                     src={item.fileName}
@@ -181,13 +181,13 @@ const ProductDetail = () => {
                       to={"/product/" + item.productId}
                       className="btn btn-dark m-1"
                     >
-                      Buy Now
+                      Xem ngay
                     </Link>
                     <button
                       className="btn btn-dark m-1"
                       onClick={() => addProduct(item)}
                     >
-                      Add to Cart
+                      Thêm vào giỏ hàng
                     </button>
                   </div>
                 </div>

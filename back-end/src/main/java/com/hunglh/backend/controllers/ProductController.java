@@ -26,15 +26,15 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping("/product")
-    public Page<Products> findAll(@RequestParam(value = "page", defaultValue = "1") Integer page,
+    public ResponseEntity<Object> findAll(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                   @RequestParam(value = "size", defaultValue = "8") Integer size) {
         PageRequest request = PageRequest.of(page - 1, size);
         return productService.findAll(request);
     }
 
     @GetMapping("/product/{productId}")
-    public ResponseEntity<Products> productDetail(@PathVariable("productId") Long productId) {
-        return ResponseEntity.status(HttpStatus.OK).body(productService.findOne(productId));
+    public ResponseEntity<Object> productDetail(@PathVariable("productId") Long productId) {
+        return productService.findOne(productId);
     }
 
     @PostMapping("/seller/product/new")

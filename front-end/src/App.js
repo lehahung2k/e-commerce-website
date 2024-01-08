@@ -17,7 +17,8 @@ import {
   ManageProduct,
   AddProduct,
   EditProduct,
-  ManageOrder
+  ManageOrder,
+  Account
 } from './pages';
 
 const App = () => {
@@ -37,6 +38,7 @@ const App = () => {
             <Route path="/register" element={<Register/>}/>
             <Route path="*" element={<PageNotFound/>}/>
             <Route path="/product/*" element={<PageNotFound/>}/>
+            <Route path={"/account"} element={<Account/>}/>
 
             {/* Cho vai trò ADMIN */}
             {userInfo && userInfo.role === 'ADMIN' && (

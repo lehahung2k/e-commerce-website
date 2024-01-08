@@ -1,6 +1,7 @@
 package com.hunglh.backend.services.impl;
 
 import com.hunglh.backend.dto.user.RegisterForm;
+import com.hunglh.backend.dto.user.UserResponse;
 import com.hunglh.backend.dto.user.UserUpdate;
 import com.hunglh.backend.entities.Cart;
 import com.hunglh.backend.entities.Role;
@@ -80,12 +81,55 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public ResponseEntity<Object> getInfo(String email) {
+        try {
+            Users user = userRepository.findByEmail(email);
+            UserResponse response = convertToUserResponse(user);
+            return ResponseEntity.status(HttpStatus.OK).body(Map.of("user", response));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", e.getMessage()));
+        }
+    }
+
+    @Override
     public Users getUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
     @Override
-    public List<Users> getAllUsers() {
-        return null;
+    public ResponseEntity<Object> findAllUsers() {
+        try {
+            List<Users> listUser = userRepository.findAllByRolesRole(Roles.USER.name());
+            List<UserResponse> users = listUser.stream()
+                    .map(this::convertToUserResponse)
+                    .toList();
+            return ResponseEntity.status(HttpStatus.OK).body(Map.of("users", users));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", e.getMessage()));
+        }
+    }
+
+    @Override
+    public ResponseEntity<Object> findAllEmployees() {
+        try {
+            List<Users> users = userRepository.findAllByRolesRole(Roles.EMPLOYEE.name());
+            return ResponseEntity.status(HttpStatus.OK).body(Map.of("users", users));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", e.getMessage()));
+        }
+    }
+
+    private UserResponse convertToUserResponse(Users user) {
+        UserResponse response = new UserResponse();
+        response.setFirstName(user.getFirstName());
+        response.setLastName(user.getLastName());
+        response.setEmail(user.getEmail());
+        response.setAddress(user.getAddress());
+        response.setCity(user.getCity());
+        response.setCountry(user.getCountry());
+        response.setPostalCode(user.getPostIndex());
+        response.setPhoneNumber(user.getPhoneNumber());
+        response.setActive(user.isActive());
+        return response;
     }
 }

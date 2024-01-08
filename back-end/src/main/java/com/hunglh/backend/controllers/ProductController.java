@@ -2,6 +2,7 @@ package com.hunglh.backend.controllers;
 
 import com.hunglh.backend.dto.product.NewProduct;
 import com.hunglh.backend.entities.Products;
+import com.hunglh.backend.services.ImageService;
 import com.hunglh.backend.services.ProductBrandService;
 import com.hunglh.backend.services.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,7 @@ public class ProductController {
 
     private final ProductBrandService productBrandService;
     private final ProductService productService;
+    private final ImageService imageService;
 
     @GetMapping("/product")
     public ResponseEntity<Object> findAll(@RequestParam(value = "page", defaultValue = "1") Integer page,
@@ -75,11 +77,9 @@ public class ProductController {
         return ResponseEntity.ok().build();
     }
 
-    private static final String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "/upload/images";
-
     @GetMapping("/upload/images/{fileName:.+}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String fileName) throws IOException {
-        return productService.getImage(fileName);
+        return imageService.getImage(fileName);
     }
 
 }

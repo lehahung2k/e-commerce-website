@@ -4,25 +4,18 @@ import com.hunglh.backend.dto.product.NewProduct;
 import com.hunglh.backend.entities.Products;
 import com.hunglh.backend.enums.ProductStatusEnum;
 import com.hunglh.backend.repositories.ProductRepository;
+import com.hunglh.backend.services.ImageService;
 import com.hunglh.backend.services.ProductBrandService;
 import com.hunglh.backend.services.ProductService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Map;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -30,9 +23,7 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final ProductBrandService productBrandService;
-    public static String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "/upload/images";
-    public static String storeImageUrl = "http://localhost:1103/api" + "/upload/images/";
-
+    private final ImageService imageService;
 
     @Override
     public ResponseEntity<Object> findOne(Long productId) {
@@ -178,13 +169,9 @@ public class ProductServiceImpl implements ProductService {
             }
 
             Products product = new Products();
-            MultipartFile file = newProduct.getImgFile();
 
-            if (file != null && !file.isEmpty()) {
-                product.setFileName(storeImage(file));
-            } else {
-                product.setFileName("/images/default.jpg");
-            }
+            String imageUri = imageService.uploadImage(newProduct.getImgFile());
+            product.setFileName(imageUri);
 
             if (newProduct.getQuantityInStock() == 0) product.setProductStatus(ProductStatusEnum.DOWN.getCode());
             product.setProductStatus(ProductStatusEnum.UP.getCode());
@@ -229,28 +216,10 @@ public class ProductServiceImpl implements ProductService {
             if (product == null) throw new RuntimeException("Product not found");
             // Xoá hình ảnh từ thư mục static/images
             String fileName = product.getFileName();
-            if (fileName != null && !fileName.equals("/images/default.jpg")) {
-                Path imagePath = Paths.get(UPLOAD_DIRECTORY, fileName.substring(storeImageUrl.length()));
-                Files.deleteIfExists(imagePath);
-            }
-            productRepository.delete(product);
+            this.imageService.deleteImage(fileName);
+            this.productRepository.delete(product);
         } catch (Exception e) {
             throw new RuntimeException("Product not found");
-        }
-    }
-
-    @Override
-    public ResponseEntity<Resource> getImage(String imageName) throws IOException {
-        Path filePath = Paths.get(UPLOAD_DIRECTORY).resolve(imageName).normalize();
-        try {
-            Resource resource = new UrlResource(filePath.toUri());
-            if (resource.exists()) {
-                return ResponseEntity.ok().body(resource);
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        } catch (IOException ex) {
-            return ResponseEntity.notFound().build();
         }
     }
 
@@ -262,17 +231,5 @@ public class ProductServiceImpl implements ProductService {
                 product.getColor(),
                 product.getStorageCapacity()
         );
-    }
-    private String generateRandomFileName(MultipartFile file) {
-        String originalFileName = file.getOriginalFilename();
-        String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
-        return UUID.randomUUID().toString() + extension;
-    }
-
-    private String storeImage(MultipartFile file) throws IOException {
-        String randomFileName = generateRandomFileName(file);
-        Path fileNameAndPath = Paths.get(UPLOAD_DIRECTORY, randomFileName);
-        Files.write(fileNameAndPath, file.getBytes());
-        return storeImageUrl + randomFileName;
     }
 }

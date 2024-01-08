@@ -13,3 +13,4 @@ export { default as ManageProduct } from './admin/ManageProduct';
 export { default as AddProduct } from './admin/AddProduct';
 export { default as EditProduct } from './admin/EditProduct';
 export { default as ManageOrder } from './admin/ViewOrder';
+export { default as Account } from './Account';

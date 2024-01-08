@@ -1,19 +1,24 @@
 package com.hunglh.backend.services;
 
+import com.hunglh.backend.dto.product.NewProduct;
 import com.hunglh.backend.entities.Products;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+
+import java.io.IOException;
 
 public interface ProductService {
 
-    Products findOne(Long productId);
+    ResponseEntity<Object> findOne(Long productId);
 
     // All selling products
     Page<Products> findUpAll(Pageable pageable);
     // All products
-    Page<Products> findAll(Pageable pageable);
+    ResponseEntity<Object> findAll(Pageable pageable);
     // All products in a category
-    Page<Products> findAllInBrand(Integer brandType, Pageable pageable);
+    ResponseEntity<Object> findAllInBrand(Integer brandType, Pageable pageable);
 
     // increase stock
     void increaseStock(Long productId, int amount);
@@ -27,10 +32,12 @@ public interface ProductService {
 
     Products update(Products product);
 
-    Products save(Products product);
+    Products save(NewProduct newProduct);
 
-    Page<Products> searchProducts(String keyword, Pageable pageable);
+    ResponseEntity<Object> searchProducts(String keyword, Pageable pageable);
 
     void delete(Long productId);
+
+    ResponseEntity<Resource> getImage(String imageName) throws IOException;
 
 }

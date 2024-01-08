@@ -8,7 +8,7 @@ const ManageUser = () => {
   const [data, setData] = useState([]);
   const [products, setProducts] = useState(data.content);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(8);
+  const [pageSize] = useState(8);
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
@@ -21,8 +21,8 @@ const ManageUser = () => {
           apiUrl += `?page=${currentPage}&size=${pageSize}`;
         }
         const response = await axios.get(apiUrl);
-        setData(response.data);
-        setProducts(response.data.content);
+        setData(response.data.products);
+        setProducts(response.data.products.content);
       } catch (error) {
         console.error("Error during fetching products:", error);
       }
@@ -42,15 +42,16 @@ const ManageUser = () => {
     }
   };
 
-  const handleSearch = async () => {
-    try {
-      const response = await axios.get(`http://localhost:1103/api/product/search?keyword=${searchTerm}&page=${currentPage}&size=${pageSize}`);
-      setData(response.data);
-      setProducts(response.data.content);
-    } catch (error) {
-      console.error("Error during searching products:", error);
-    }
-  };
+  // const handleSearch = async () => {
+  //   try {
+  //     const response =
+  //         await axios.get(`http://localhost:1103/api/product/search?keyword=${searchTerm}&page=${currentPage}&size=${pageSize}`);
+  //     setData(response.data);
+  //     setProducts(response.data.content);
+  //   } catch (error) {
+  //     console.error("Error during searching products:", error);
+  //   }
+  // };
 
   const handleDeleteProduct = async (productId) => {
     const userConfirmed = window.confirm("Bạn có chắc chắn muốn xoá sản phẩm này?");
@@ -76,8 +77,8 @@ const ManageUser = () => {
 
         <div className={'row'}>
           <div className={'col-6'}>
-            <Link to="/admin/add-product" className="btn btn-primary mb-3">
-              Thêm mới sản phẩm
+            <Link to="/admin/add-product" className="btn btn-outline-dark">
+              <i className="fa-solid fa-plus"></i> Thêm sản phẩm
             </Link>
           </div>
           <div className="input-group mb-3 col-6">
@@ -89,8 +90,8 @@ const ManageUser = () => {
                 onChange={(e) => setSearchTerm(e.target.value)}
             />
             <div className="input-group-append">
-              <button className="btn btn-primary" type="button" onClick={handleSearch}>
-                Tìm kiếm
+              <button className="btn btn-outline-primary" type="button">
+                <i className="fa-solid fa-magnifying-glass"></i>
               </button>
             </div>
           </div>

@@ -9,11 +9,11 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 const Products = () => {
-  const [data, setData] = useState({ content: [] }); // Ban đầu, data sẽ là một đối tượng có trường content là một mảng
+  const [data, setData] = useState({ content: [] });
   const [filter, setFilter] = useState(data.content); // Sử dụng data.content cho việc filter
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(8);
+  const [pageSize] = useState(8);
 
   const authState = useSelector(state => state.authReducer);
   const isAuthenticated = authState && authState.isAuthenticated;
@@ -29,8 +29,9 @@ const Products = () => {
       setLoading(true);
       try {
         const response = await axios.get(`http://localhost:1103/api/product?page=${currentPage}&size=${pageSize}`);
-        setData(response.data);
-        setFilter(response.data.content); // Thay đổi ở đây
+        console.log(response);
+        setData(response.data.products);
+        setFilter(response.data.products.content); // Thay đổi ở đây
         setLoading(false);
       } catch (error) {
         console.error("Error during fetching products:", error);
@@ -58,22 +59,28 @@ const Products = () => {
         <div className="col-12 py-5 text-center">
           <Skeleton height={40} width={560} />
         </div>
-        <div className="col-md-4 col-sm-6 col-xs-8 col-12 mb-4">
+        <div className="col-md-3 col-sm-6 col-xs-8 col-12 mb-4">
           <Skeleton height={592} />
         </div>
-        <div className="col-md-4 col-sm-6 col-xs-8 col-12 mb-4">
+        <div className="col-md-3 col-sm-6 col-xs-8 col-12 mb-4">
           <Skeleton height={592} />
         </div>
-        <div className="col-md-4 col-sm-6 col-xs-8 col-12 mb-4">
+        <div className="col-md-3 col-sm-6 col-xs-8 col-12 mb-4">
           <Skeleton height={592} />
         </div>
-        <div className="col-md-4 col-sm-6 col-xs-8 col-12 mb-4">
+        <div className="col-md-3 col-sm-6 col-xs-8 col-12 mb-4">
           <Skeleton height={592} />
         </div>
-        <div className="col-md-4 col-sm-6 col-xs-8 col-12 mb-4">
+        <div className="col-md-3 col-sm-6 col-xs-8 col-12 mb-4">
           <Skeleton height={592} />
         </div>
-        <div className="col-md-4 col-sm-6 col-xs-8 col-12 mb-4">
+        <div className="col-md-3 col-sm-6 col-xs-8 col-12 mb-4">
+          <Skeleton height={592} />
+        </div>
+        <div className="col-md-3 col-sm-6 col-xs-8 col-12 mb-4">
+          <Skeleton height={592} />
+        </div>
+        <div className="col-md-3 col-sm-6 col-xs-8 col-12 mb-4">
           <Skeleton height={592} />
         </div>
       </>
@@ -81,8 +88,9 @@ const Products = () => {
   };
 
   const filterByBrand = async (brand) => {
-    const products = await axios.get(`http://localhost:1103/api/category/${brand}`);
-    setFilter(products.data.page.content);
+    const response = await axios.get(`http://localhost:1103/api/category/${brand}`);
+    console.log(response.data.page.body);
+    setFilter(response.data.page.body.products.content);
   }
 
   const ShowProducts = () => {
@@ -101,7 +109,7 @@ const Products = () => {
           filter.map((product) => {
             return (
               <div id={product.productId} key={product.productId} className="col-md-3 col-sm-6 col-xs-8 col-12 mb-4">
-                <div className="card text-center h-100" key={product.id}>
+                <div className="card text-center h-100" key={product.productId}>
                   <img
                     className="card-img-top p-3"
                     src={product.fileName}

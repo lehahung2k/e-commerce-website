@@ -1,9 +1,12 @@
 package com.hunglh.backend.controllers;
 
+import com.hunglh.backend.dto.product.NewProduct;
 import com.hunglh.backend.entities.Products;
 import com.hunglh.backend.services.ProductBrandService;
 import com.hunglh.backend.services.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +17,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Map;
 
 @CrossOrigin
@@ -25,19 +31,19 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping("/product")
-    public Page<Products> findAll(@RequestParam(value = "page", defaultValue = "1") Integer page,
+    public ResponseEntity<Object> findAll(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                   @RequestParam(value = "size", defaultValue = "8") Integer size) {
         PageRequest request = PageRequest.of(page - 1, size);
         return productService.findAll(request);
     }
 
     @GetMapping("/product/{productId}")
-    public ResponseEntity<Products> productDetail(@PathVariable("productId") Long productId) {
-        return ResponseEntity.status(HttpStatus.OK).body(productService.findOne(productId));
+    public ResponseEntity<Object> productDetail(@PathVariable("productId") Long productId) {
+        return productService.findOne(productId);
     }
 
     @PostMapping("/seller/product/new")
-    public ResponseEntity<Products> addNewProduct(@Valid @RequestBody Products product,
+    public ResponseEntity<Products> addNewProduct(@Valid @ModelAttribute NewProduct product,
                                  BindingResult bindingResult) {
         return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(product));
     }
@@ -57,17 +63,23 @@ public class ProductController {
     }
 
     @GetMapping("/product/search")
-    public ResponseEntity<Page<Products>> searchProducts(
+    public ResponseEntity<Object> searchProducts(
             @RequestParam String keyword,
             @PageableDefault(size = 8, sort = "productId") Pageable pageable) {
-        Page<Products> searchResult = productService.searchProducts(keyword, pageable);
-        return ResponseEntity.ok(searchResult);
+        return productService.searchProducts(keyword, pageable);
     }
 
     @DeleteMapping("/seller/product/{productId}/delete")
     public ResponseEntity<Object> delete(@PathVariable("productId") Long productId) {
         productService.delete(productId);
         return ResponseEntity.ok().build();
+    }
+
+    private static final String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "/upload/images";
+
+    @GetMapping("/upload/images/{fileName:.+}")
+    public ResponseEntity<Resource> downloadFile(@PathVariable String fileName) throws IOException {
+        return productService.getImage(fileName);
     }
 
 }

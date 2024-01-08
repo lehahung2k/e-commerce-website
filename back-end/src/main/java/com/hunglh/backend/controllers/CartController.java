@@ -1,13 +1,13 @@
 package com.hunglh.backend.controllers;
 
-import com.hunglh.backend.dto.product.NewProduct;
+import com.hunglh.backend.dto.product.NewProductCart;
 import com.hunglh.backend.entities.Cart;
 import com.hunglh.backend.entities.ProductInOrder;
 import com.hunglh.backend.entities.Users;
 import com.hunglh.backend.repositories.ProductInOrderRepository;
+import com.hunglh.backend.repositories.ProductRepository;
 import com.hunglh.backend.services.CartService;
 import com.hunglh.backend.services.ProductInOrderService;
-import com.hunglh.backend.services.ProductService;
 import com.hunglh.backend.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +24,7 @@ import java.util.Collections;
 public class CartController {
     private final CartService cartService;
     private final UserService userService;
-    private final ProductService productService;
+    private final ProductRepository productService;
     private final ProductInOrderService productInOrderService;
     private final ProductInOrderRepository productInOrderRepository;
 
@@ -46,8 +46,8 @@ public class CartController {
     }
 
     @PostMapping("/add")
-    public boolean addToCart(@RequestBody NewProduct newProduct, Principal principal) {
-        var productInfo = productService.findOne(newProduct.getProductId());
+    public boolean addToCart(@RequestBody NewProductCart newProduct, Principal principal) {
+        var productInfo = productService.findByProductId(newProduct.getProductId());
         try {
             mergeCart(Collections.singleton(new ProductInOrder(productInfo, newProduct.getQuantityInStock())), principal);
         } catch (Exception e) {

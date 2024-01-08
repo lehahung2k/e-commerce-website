@@ -3,30 +3,31 @@ const cart = []
 const handleCart = (state=cart, action) =>{
     const product = action.payload
     switch(action.type){
+        case "SET_CART":
+            return action.payload; // Set the entire cart from server
         case "ADDITEM":
             // Check if product already in cart
             const exist = state.find((x) => x.productId === product.productId)
             if(exist){
                 // Increase the quantity
-                return state.map((x)=>x.productId ===product.productId?{...x, qty: x.qty+1}:x)
+                return state.map((x)=>
+                    x.productId === product.productId ? {...x, count: x.count+1} : x
+                )
             }
             else{
-                return [...state, {...product, qty:1}]
+                return [...state, {...product, count:1}]
             }
-            break;
         case "DELITEM":
-            const exist2 = state.find((x) => x.id === product.id)
-            if(exist2.qty === 1){
-                return state.filter((x)=>x.id!==exist2.id)
+            const exist2 = state.find((x) => x.productId === product.productId)
+            if(exist2.count === 1){
+                return state.filter((x)=>x.productId!==exist2.productId)
             }
             else{
-                return state.map((x)=> x.id===product.id?{...x, qty:x.qty-1}:x)
+                return state.map((x)=> x.productId===product.productId?{...x, count:x.count-1}:x)
             }
-            break;
 
         default:
             return state
-            break;
     }
 }
 

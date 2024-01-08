@@ -43,11 +43,12 @@ public class ProductInOrder {
     @Column(name = "price")
     private BigDecimal price;
 
-    @Column(name = "description")
+    @Lob
+    @Column(name = "description", length = Integer.MAX_VALUE)
     private String description;
 
     @Column(name = "filename")
-    private String filename;
+    private String fileName;
 
     @Column(name = "quantity_in_stock")
     private Integer quantityInStock;
@@ -80,7 +81,7 @@ public class ProductInOrder {
         this.productId = products.getProductId();
         this.productName = products.getProductName();
         this.description = products.getDescription();
-        this.filename = products.getFileName();
+        this.fileName = products.getFileName();
         this.brand = products.getBrand();
         this.model = products.getModel();
         this.color = products.getColor();
@@ -105,7 +106,7 @@ public class ProductInOrder {
                 Objects.equals(productId, that.productId) &&
                 Objects.equals(productName, that.productName) &&
                 Objects.equals(description, that.description) &&
-                Objects.equals(filename, that.filename) &&
+                Objects.equals(fileName, that.fileName) &&
                 Objects.equals(brand, that.brand) &&
                 Objects.equals(model, that.model) &&
                 Objects.equals(color, that.color) &&
@@ -120,6 +121,6 @@ public class ProductInOrder {
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), id, productId, productName, description, filename, brand, model, color, storageCapacity, screenSize, ram, cpu, os, batteryCapacity, price);
+        return Objects.hash(super.hashCode(), id, productId, productName, description, fileName, brand, model, color, storageCapacity, screenSize, ram, cpu, os, batteryCapacity, price);
     }
 }

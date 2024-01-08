@@ -97,7 +97,7 @@ const ProductDetail = () => {
                 <li className="list-group-item lead">ROM: {product.storageCapacity}</li>
                 <li className="list-group-item lead">Màn hình: {product.screenSize}</li>
                 <li className="list-group-item lead">Hệ điều hành: {product.os}</li>
-                <li className="list-group-item lead">Pin: {product.batteryCapacity} mah</li>
+                <li className="list-group-item lead">Pin: {product.batteryCapacity}</li>
                 <li className="list-group-item lead">Màu sắc: {product.color}</li>
               </ul>
               <p className="lead border"></p>

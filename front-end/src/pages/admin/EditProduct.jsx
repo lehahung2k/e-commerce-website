@@ -30,7 +30,7 @@ const EditProduct = () => {
         const fetchProduct = async () => {
             try {
                 const response = await axios.get(`http://localhost:1103/api/product/${id}`);
-                const data = response.data;
+                const data = response.data.mobile;
                 setProduct(data);
                 setFormData({
                     ...formData,

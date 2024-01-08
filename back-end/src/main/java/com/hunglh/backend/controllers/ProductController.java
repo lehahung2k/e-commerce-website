@@ -5,6 +5,8 @@ import com.hunglh.backend.entities.Products;
 import com.hunglh.backend.services.ProductBrandService;
 import com.hunglh.backend.services.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +17,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Map;
 
 @CrossOrigin
@@ -58,17 +63,23 @@ public class ProductController {
     }
 
     @GetMapping("/product/search")
-    public ResponseEntity<Page<Products>> searchProducts(
+    public ResponseEntity<Object> searchProducts(
             @RequestParam String keyword,
             @PageableDefault(size = 8, sort = "productId") Pageable pageable) {
-        Page<Products> searchResult = productService.searchProducts(keyword, pageable);
-        return ResponseEntity.ok(searchResult);
+        return productService.searchProducts(keyword, pageable);
     }
 
     @DeleteMapping("/seller/product/{productId}/delete")
     public ResponseEntity<Object> delete(@PathVariable("productId") Long productId) {
         productService.delete(productId);
         return ResponseEntity.ok().build();
+    }
+
+    private static final String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "/upload/images";
+
+    @GetMapping("/upload/images/{fileName:.+}")
+    public ResponseEntity<Resource> downloadFile(@PathVariable String fileName) throws IOException {
+        return productService.getImage(fileName);
     }
 
 }

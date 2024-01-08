@@ -7,6 +7,8 @@ import com.hunglh.backend.repositories.ProductRepository;
 import com.hunglh.backend.services.ProductBrandService;
 import com.hunglh.backend.services.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -28,8 +30,9 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final ProductBrandService productBrandService;
-    public static String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "/src/main/resources/static/images";
-    public static String storeImageUrl = "http://localhost:1103/api" + "/static/images/";
+    public static String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "/upload/images";
+    public static String storeImageUrl = "http://localhost:1103/api" + "/upload/images/";
+
 
     @Override
     public ResponseEntity<Object> findOne(Long productId) {
@@ -206,11 +209,16 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Products> searchProducts(String keyword, Pageable pageable) {
+    public ResponseEntity<Object> searchProducts(String keyword, Pageable pageable) {
         try {
-            return productRepository.findByProductNameContainingOrModelContaining(keyword, keyword, pageable);
+            Page<Products> product = productRepository.findByProductNameContainingOrModelContaining(keyword, keyword, pageable);
+            return ResponseEntity.status(HttpStatus.OK).body(Map.of(
+                    "products", product,
+                    "totalPages", product.getTotalPages(),
+                    "totalElements", product.getTotalElements()
+            ));
         } catch (Exception e) {
-            throw new RuntimeException("Error while searching products", e);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", e.getMessage()));
         }
     }
 
@@ -228,6 +236,21 @@ public class ProductServiceImpl implements ProductService {
             productRepository.delete(product);
         } catch (Exception e) {
             throw new RuntimeException("Product not found");
+        }
+    }
+
+    @Override
+    public ResponseEntity<Resource> getImage(String imageName) throws IOException {
+        Path filePath = Paths.get(UPLOAD_DIRECTORY).resolve(imageName).normalize();
+        try {
+            Resource resource = new UrlResource(filePath.toUri());
+            if (resource.exists()) {
+                return ResponseEntity.ok().body(resource);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (IOException ex) {
+            return ResponseEntity.notFound().build();
         }
     }
 

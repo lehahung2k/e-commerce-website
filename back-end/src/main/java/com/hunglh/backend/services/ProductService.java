@@ -2,9 +2,12 @@ package com.hunglh.backend.services;
 
 import com.hunglh.backend.dto.product.NewProduct;
 import com.hunglh.backend.entities.Products;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+
+import java.io.IOException;
 
 public interface ProductService {
 
@@ -31,8 +34,10 @@ public interface ProductService {
 
     Products save(NewProduct newProduct);
 
-    Page<Products> searchProducts(String keyword, Pageable pageable);
+    ResponseEntity<Object> searchProducts(String keyword, Pageable pageable);
 
     void delete(Long productId);
+
+    ResponseEntity<Resource> getImage(String imageName) throws IOException;
 
 }

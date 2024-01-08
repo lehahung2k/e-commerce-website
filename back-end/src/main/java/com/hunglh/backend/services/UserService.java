@@ -14,7 +14,11 @@ public interface UserService {
 
     void updateProfile(UserUpdate userUpdate, String email);
 
+    ResponseEntity<Object> getInfo(String email);
+
     Users getUserByEmail(String email);
 
     ResponseEntity<Object> findAllUsers();
+
+    ResponseEntity<Object> findAllEmployees();
 }

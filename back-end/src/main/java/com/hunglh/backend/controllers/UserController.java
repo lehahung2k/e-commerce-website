@@ -18,13 +18,18 @@ public class UserController {
         return this.userService.createUser(registerForm);
     }
 
-    @GetMapping("/manager/user")
-    public ResponseEntity<Object> findAllUser() {
-        return null;
+    @GetMapping("/info")
+    public ResponseEntity<Object> getInfo(@RequestParam String email) {
+        return this.userService.getInfo(email);
     }
 
-    @GetMapping("/manager/employee")
+    @GetMapping("/manage-user")
+    public ResponseEntity<Object> findAllUser() {
+        return this.userService.findAllUsers();
+    }
+
+    @GetMapping("/manage-employee")
     public ResponseEntity<Object> findAllEmployee() {
-        return null;
+        return this.userService.findAllEmployees();
     }
 }

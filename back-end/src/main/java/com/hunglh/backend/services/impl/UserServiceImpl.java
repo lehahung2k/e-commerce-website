@@ -85,7 +85,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Users> getAllUsers() {
-        return null;
+    public ResponseEntity<Object> findAllUsers() {
+        try {
+            List<Users> users = userRepository.findAll();
+            return ResponseEntity.status(HttpStatus.OK).body(Map.of("users", users));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", e.getMessage()));
+        }
     }
 }

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { AdminNavBar, Footer } from '../../components';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 const EditProduct = () => {

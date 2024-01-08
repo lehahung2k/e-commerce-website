@@ -16,5 +16,5 @@ public interface UserService {
 
     Users getUserByEmail(String email);
 
-    List<Users> getAllUsers();
+    ResponseEntity<Object> findAllUsers();
 }

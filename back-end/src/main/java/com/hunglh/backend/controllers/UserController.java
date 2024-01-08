@@ -4,10 +4,7 @@ import com.hunglh.backend.dto.user.RegisterForm;
 import com.hunglh.backend.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,5 +16,15 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<Object> registerUser(@RequestBody RegisterForm registerForm) {
         return this.userService.createUser(registerForm);
+    }
+
+    @GetMapping("/manager/user")
+    public ResponseEntity<Object> findAllUser() {
+        return null;
+    }
+
+    @GetMapping("/manager/employee")
+    public ResponseEntity<Object> findAllEmployee() {
+        return null;
     }
 }

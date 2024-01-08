@@ -38,6 +38,4 @@ public interface ProductService {
 
     void delete(Long productId);
 
-    ResponseEntity<Resource> getImage(String imageName) throws IOException;
-
 }

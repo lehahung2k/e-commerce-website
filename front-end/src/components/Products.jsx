@@ -20,8 +20,27 @@ const Products = () => {
 
   const dispatch = useDispatch();
 
-  const addProduct = (product) => {
-    dispatch(addCart(product))
+  const addProduct = async (product) => {
+    try {
+      // Gửi yêu cầu thêm vào giỏ hàng
+      const response = await axios.post('http://localhost:1103/api/cart/add', {
+        productId: product.productId,
+        quantityInStock: 1, // Số lượng có thể điều chỉnh tùy vào ý của bạn
+        }, {
+        headers: {
+          Authorization: `Bearer ${authState.token}`, // Bearer token (nếu có)
+        },
+      });
+      console.log(response.data);
+      // Nếu thành công, dispatch action để cập nhật giỏ hàng trong Redux
+      if (response.data === true) {
+        dispatch(addCart(product));
+        alert('Thêm sản phẩm thành công. Hãy kiểm tra giỏ hàng!');
+      }
+    } catch (error) {
+      console.error("Error during adding to cart:", error);
+    }
+    
   }
 
   useEffect(() => {
@@ -132,7 +151,7 @@ const Products = () => {
                     <Link to={"/product/" + product.productId} className="btn btn-dark m-1">
                       Xem ngay
                     </Link>
-                    {isAuthenticated ? (
+                    {isAuthenticated && product.productStatus === 0 ? (
                       <button className="btn btn-dark m-1" onClick={() => addProduct(product)}>
                         Thêm vào giỏ hàng
                       </button>

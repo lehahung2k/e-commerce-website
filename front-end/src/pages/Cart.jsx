@@ -1,15 +1,42 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {Footer, Navbar} from "../components";
 import {useSelector, useDispatch} from "react-redux";
-import {addCart, delCart} from "../redux/action";
+import {addCart, delCart, login} from "../redux/action";
 import {Link} from "react-router-dom";
+import axios from "axios";
 
 const Cart = () => {
+  const [productInOrders, setProductInOrders] = useState([]);
+  const [total, setTotal] = useState(0);
   const state = useSelector((state) => state.handleCart);
-  const authState = useSelector(state => state.authReducer);
+  const authState = useSelector((state) => state.authReducer);
   const dispatch = useDispatch();
 
   const isAuthenticated = authState && authState.isAuthenticated;
+
+  useEffect(() => {
+    // Load cart data
+    const getCart = async () => {
+      try {
+        const response = await axios.get(
+            `http://localhost:1103/api/cart`,
+            {
+              headers: {
+                Authorization: `Bearer ${authState.token}`,
+              },
+            }
+        );
+        dispatch({ type: "SET_CART", payload: response.data.products.length });
+        setProductInOrders(response.data.products);
+        setTotal(response.data.total);
+        console.log(productInOrders);
+      } catch (error) {
+        console.error("Error during fetching cart:", error);
+      }
+    };
+
+    getCart();
+  }, []);
 
   const EmptyCart = () => {
     return (
@@ -24,7 +51,8 @@ const Cart = () => {
                     </Link>
                   </div>
                 </div>
-              </div>) : (
+              </div>
+            ) : (
               <div className="container">
                 {/** redirect to login */}
                 <div className="row">
@@ -36,7 +64,7 @@ const Cart = () => {
                   </div>
                 </div>
               </div>
-          )
+            )
           }
         </>
     );
@@ -53,12 +81,12 @@ const Cart = () => {
     let subtotal = 0;
     let shipping = 30.0;
     let totalItems = 0;
-    state.map((item) => {
-      return (subtotal += item.price * item.qty);
+    productInOrders.map((item) => {
+      return (subtotal += item.price * item.count);
     });
 
-    state.map((item) => {
-      return (totalItems += item.qty);
+    productInOrders.map((item) => {
+      return (totalItems += item.count);
     });
     return (
         <>
@@ -71,7 +99,7 @@ const Cart = () => {
                       <h5 className="mb-0">Danh sách sản phẩm</h5>
                     </div>
                     <div className="card-body">
-                      {state.map((item) => {
+                      {productInOrders.map((item) => {
                         return (
                             <div key={item.productId}>
                               <div className="row d-flex align-items-center">
@@ -111,7 +139,7 @@ const Cart = () => {
                                       <i className="fas fa-minus"></i>
                                     </button>
 
-                                    <p className="mx-5">{item.qty}</p>
+                                    <p className="mx-5">{item.count}</p>
 
                                     <button
                                         className="btn px-3"
@@ -125,7 +153,7 @@ const Cart = () => {
 
                                   <p className="text-start text-md-center">
                                     <strong>
-                                      <span className="text-muted">{item.qty}</span>{" "}
+                                      <span className="text-muted">{item.count}</span>{" "}
                                       x ${item.price}
                                     </strong>
                                   </p>
@@ -185,7 +213,7 @@ const Cart = () => {
         <div className="container my-3 py-3">
           <h1 className="text-center">Giỏ hàng</h1>
           <hr/>
-          {state.length > 0 ? <ShowCart/> : <EmptyCart/>}
+          {productInOrders.length > 0 ? <ShowCart/> : <EmptyCart/>}
         </div>
         <Footer/>
       </>

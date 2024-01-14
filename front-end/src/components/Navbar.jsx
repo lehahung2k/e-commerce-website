@@ -5,6 +5,7 @@ import {logout} from "../redux/action";
 
 const Navbar = () => {
     const authState = useSelector(state => state.authReducer);
+    const state = useSelector(state => state.handleCart)
 
     // Kiểm tra xem authState có tồn tại và isAuthenticated có là true không
     const isAuthenticated = authState && authState.isAuthenticated;
@@ -51,7 +52,7 @@ const Navbar = () => {
                         <ul className="navbar-nav m-auto my-2 text-center">
                             <li className="nav-item">
                                 <NavLink to="/cart" className="btn btn-outline-dark m-2">
-                                    <i className="fa fa-cart-shopping mr-1"></i> Giỏ hàng
+                                    <i className="fa fa-cart-shopping mr-1"></i> Giỏ hàng ({state})
                                 </NavLink>
                             </li>
                             {isAuthenticated ? (

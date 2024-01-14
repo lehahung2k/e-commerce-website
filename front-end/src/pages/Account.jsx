@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {AdminNavBar, Footer, Navbar} from "../components";
 import {useSelector} from "react-redux";
+import axios from "axios";
 
 const Account = () => {
   const [user, setUser] = useState([]);
@@ -10,8 +11,8 @@ const Account = () => {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const response = await fetch(`http://localhost:1103/api/user/info`).params(`id=${userInfo.email}`);
-        const data = await response.json();
+        const response = await axios.get(`http://localhost:1103/api/user/info?email=${userInfo.email}`);
+        const data = response.data;
         setUser(data.user);
       } catch (error) {
         console.error("Error during fetching user:", error);
@@ -33,7 +34,7 @@ const Account = () => {
               <div className="card-body">
                 <h5>Ảnh đại diện: </h5>
                 <hr />
-                <img src="https://via.placeholder.com/500x500" alt="avatar" className="img-fluid"/>
+                <img src="https://cdn-icons-png.flaticon.com/128/847/847969.png" alt="avatar" className="img-fluid" width={'100%'}/>
               </div>
             </div>
           </div>
@@ -47,8 +48,9 @@ const Account = () => {
                 <p className="card-text">Địa chỉ: {user.address}</p>
                 <p className="card-text">Số điện thoại: {user.phoneNumber}</p>
                 <p className="card-text">Quốc gia: {user.country}</p>
-                <p className="card-text">Mã bưu điện {user.postalCode}</p>
-                <a href="/" className="btn btn-primary">Cập nhật thông tin</a>
+                <p className="card-text">Mã bưu điện: {user.postalCode}</p>
+                <hr />
+                <a href="/settings" className="btn btn-outline-dark ">Cập nhật thông tin</a>
               </div>
             </div>
           </div>

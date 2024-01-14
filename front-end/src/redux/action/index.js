@@ -18,7 +18,7 @@ export const delCart = (product) =>{
 // authActions
 export const login = (token, userInfo) => {
     Cookies.set('token', token, { expires: 1 });
-    Cookies.set('userInfo', JSON.stringify(userInfo), { expires: 1 });
+    Cookies.set('userInfo', JSON.stringify(userInfo), { expires: 100 });
     return {
         type: 'LOGIN',
         payload: { token, userInfo },

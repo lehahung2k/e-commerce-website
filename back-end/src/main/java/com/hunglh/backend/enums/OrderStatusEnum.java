@@ -3,7 +3,8 @@ package com.hunglh.backend.enums;
 public enum OrderStatusEnum implements CodeEnum {
     NEW(0, "New OrderMain"),
     FINISHED(1, "Finished"),
-    CANCELED(2, "Canceled")
+    CANCELED(2, "Canceled"),
+    IN_PROGRESS(3, "In Progress"),
     ;
 
     private  int code;

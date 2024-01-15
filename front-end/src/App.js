@@ -19,7 +19,9 @@ import {
     EditProduct,
     ManageOrder,
     Account,
-    Setting
+    Setting,
+    Order,
+    OrderDetail
 } from './pages';
 
 const App = () => {
@@ -41,6 +43,14 @@ const App = () => {
             <Route path="/product/*" element={<PageNotFound />} />
             <Route path={"/account"} element={<Account />} />
             <Route path={"/settings"} element={<Setting />} />
+
+            {/* Cho vai trò USER */}
+            {userInfo && userInfo.role === 'USER' && (
+                <>
+                    <Route path='/order' element={<Order />} />
+                    <Route path="/order/:orderId" element={<OrderDetail />} />
+                </>
+            )}
 
             {/* Cho vai trò ADMIN */}
             {userInfo && userInfo.role === 'ADMIN' && (

@@ -23,11 +23,11 @@ public class OrderController {
     private final UserService userService;
 
     @GetMapping("/order")
-    public Page<OrderMain> orderList(@RequestParam(value = "page", defaultValue = "1") Integer page,
+    public ResponseEntity<Object> orderList(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                      @RequestParam(value = "size", defaultValue = "10") Integer size,
                                      Authentication authentication) {
         PageRequest request = PageRequest.of(page - 1, size);
-        Page<OrderMain> orderPage;
+        ResponseEntity<Object> orderPage;
         if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_CUSTOMER"))) {
             orderPage = orderService.findByBuyerEmail(authentication.getName(), request);
         } else {

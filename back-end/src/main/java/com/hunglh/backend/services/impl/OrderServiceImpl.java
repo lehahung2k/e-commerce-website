@@ -13,8 +13,11 @@ import com.hunglh.backend.services.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -26,8 +29,13 @@ public class OrderServiceImpl implements OrderService {
     private final ProductInOrderRepository productInOrderRepository;
 
     @Override
-    public Page<OrderMain> findAll(Pageable pageable) {
-        return orderRepository.findAllByOrderByOrderStatusAscCreateTimeDesc(pageable);
+    public ResponseEntity<Object> findAll(Pageable pageable) {
+        Page<OrderMain> order =  orderRepository.findAllByOrderByOrderStatusAscCreateTimeDesc(pageable);
+        return ResponseEntity.status(200).body(Map.of(
+                "orders", order,
+                "totalPages", order.getTotalPages(),
+                "totalElements", order.getTotalElements()
+        ));
     }
 
     @Override
@@ -36,8 +44,13 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Page<OrderMain> findByBuyerEmail(String email, Pageable pageable) {
-        return orderRepository.findAllByBuyerEmailOrderByOrderStatusAscCreateTimeDesc(email, pageable);
+    public ResponseEntity<Object> findByBuyerEmail(String email, Pageable pageable) {
+        Page<OrderMain> order = orderRepository.findAllByBuyerEmailOrderByOrderStatusAscCreateTimeDesc(email, pageable);
+        return ResponseEntity.status(200).body(Map.of(
+                "orders", order,
+                "totalPages", order.getTotalPages(),
+                "totalElements", order.getTotalElements()
+        ));
     }
 
     @Override

@@ -52,7 +52,7 @@ const Navbar = () => {
                         <ul className="navbar-nav m-auto my-2 text-center">
                             <li className="nav-item">
                                 <NavLink to="/cart" className="btn btn-outline-dark m-2">
-                                    <i className="fa fa-cart-shopping mr-1"></i> Giỏ hàng ({state})
+                                    <i className="fa fa-cart-shopping mr-1"></i> Giỏ hàng
                                 </NavLink>
                             </li>
                             {isAuthenticated ? (
@@ -69,6 +69,9 @@ const Navbar = () => {
                                             {userInfo.fullName}
                                         </button>
                                         <div className="dropdown-menu" aria-labelledby="userDropdown">
+                                            <NavLink className="dropdown-item" to="/order">
+                                                Đơn hàng
+                                            </NavLink>
                                             <NavLink className="dropdown-item" to="/account">
                                                 Chi tiết tài khoản
                                             </NavLink>

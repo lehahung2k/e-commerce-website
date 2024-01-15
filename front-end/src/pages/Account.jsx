@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {AdminNavBar, Footer, Navbar} from "../components";
+import {AdminNavBar, Footer, Navbar, OrderComponent} from "../components";
 import {useSelector} from "react-redux";
 import axios from "axios";
 
@@ -55,6 +55,10 @@ const Account = () => {
             </div>
           </div>
         </div>
+
+        <h2 className="text-center">Đơn hàng</h2>
+        <hr/>
+        <OrderComponent />
       </div>
       <Footer />
     </>

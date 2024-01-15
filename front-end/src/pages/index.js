@@ -15,3 +15,5 @@ export { default as EditProduct } from './admin/EditProduct';
 export { default as ManageOrder } from './admin/ViewOrder';
 export { default as Account } from './Account';
 export { default as Setting } from './Setting';
+export { default as Order } from './Order';
+export { default as OrderDetail } from './OrderDetail';

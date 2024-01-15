@@ -1,9 +1,57 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Footer, Navbar } from "../components";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import axios from "axios";
+
 const Checkout = () => {
   const state = useSelector((state) => state.handleCart);
+  const [cartInfo, setCartInfo] = useState([]);
+  const authState = useSelector((state) => state.authReducer);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // Load cart data
+    const getCart = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:1103/api/cart`,
+          {
+            headers: {
+              Authorization: `Bearer ${authState.token}`,
+            },
+          }
+        );
+        dispatch({ type: "SET_CART", payload: cartInfo });
+        setCartInfo(response.data.products);
+        // ... (cập nhật các state khác nếu cần)
+      } catch (error) {
+        console.error("Error during fetching cart:", error);
+      }
+    };
+
+    getCart();
+  }, [authState.token]);
+
+  const handleCheckout = async () => {
+    try {
+      const response = await axios.post(
+        `http://localhost:1103/api/cart/checkout`,
+        {
+          products: cartInfo,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${authState.token}`,
+          },
+        }
+      );
+      console.log(response);
+      dispatch({ type: "CLEAR_CART" });
+    } catch (error) {
+      console.log("Error during checkout:", error);
+    }
+  }
 
   const EmptyCart = () => {
     return (
@@ -24,12 +72,12 @@ const Checkout = () => {
     let subtotal = 0;
     let shipping = 30.0;
     let totalItems = 0;
-    state.map((item) => {
-      return (subtotal += item.price * item.qty);
+    cartInfo.map((item) => {
+      return (subtotal += item.price * item.count);
     });
 
-    state.map((item) => {
-      return (totalItems += item.qty);
+    cartInfo.map((item) => {
+      return (totalItems += item.count);
     });
     return (
       <>
@@ -38,20 +86,20 @@ const Checkout = () => {
             <div className="col-md-5 col-lg-4 order-md-last">
               <div className="card mb-4">
                 <div className="card-header py-3 bg-light">
-                  <h5 className="mb-0">Order Summary</h5>
+                  <h5 className="mb-0">Thông tin thanh toán</h5>
                 </div>
                 <div className="card-body">
                   <ul className="list-group list-group-flush">
                     <li className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
-                      Products ({totalItems})<span>${Math.round(subtotal)}</span>
+                      Sản phẩm ({totalItems})<span>${Math.round(subtotal)}</span>
                     </li>
                     <li className="list-group-item d-flex justify-content-between align-items-center px-0">
-                      Shipping
+                      Phí ship
                       <span>${shipping}</span>
                     </li>
                     <li className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
                       <div>
-                        <strong>Total amount</strong>
+                        <strong>Tổng</strong>
                       </div>
                       <span>
                         <strong>${Math.round(subtotal + shipping)}</strong>
@@ -64,14 +112,14 @@ const Checkout = () => {
             <div className="col-md-7 col-lg-8">
               <div className="card mb-4">
                 <div className="card-header py-3">
-                  <h4 className="mb-0">Billing address</h4>
+                  <h4 className="mb-0">Địa chỉ giao hàng</h4>
                 </div>
                 <div className="card-body">
                   <form className="needs-validation" novalidate>
                     <div className="row g-3">
                       <div className="col-sm-6 my-1">
                         <label for="firstName" className="form-label">
-                          First name
+                          Họ
                         </label>
                         <input
                           type="text"
@@ -81,13 +129,13 @@ const Checkout = () => {
                           required
                         />
                         <div className="invalid-feedback">
-                          Valid first name is required.
+                          Không được để trống
                         </div>
                       </div>
 
                       <div className="col-sm-6 my-1">
                         <label for="lastName" className="form-label">
-                          Last name
+                          Tên đệm và tên
                         </label>
                         <input
                           type="text"
@@ -97,7 +145,7 @@ const Checkout = () => {
                           required
                         />
                         <div className="invalid-feedback">
-                          Valid last name is required.
+                          Không được để trống
                         </div>
                       </div>
 
@@ -120,7 +168,7 @@ const Checkout = () => {
 
                       <div className="col-12 my-1">
                         <label for="address" className="form-label">
-                          Address
+                          Địa chỉ
                         </label>
                         <input
                           type="text"
@@ -136,8 +184,8 @@ const Checkout = () => {
 
                       <div className="col-12">
                         <label for="address2" className="form-label">
-                          Address 2{" "}
-                          <span className="text-muted">(Optional)</span>
+                          Địa chỉ 2{" "}
+                          <span className="text-muted">(Không bắt buộc)</span>
                         </label>
                         <input
                           type="text"
@@ -149,12 +197,15 @@ const Checkout = () => {
 
                       <div className="col-md-5 my-1">
                         <label for="country" className="form-label">
-                          Country
+                          Nước
                         </label>
                         <br />
                         <select className="form-select" id="country" required>
                           <option value="">Choose...</option>
-                          <option>India</option>
+                          <option>Vietnam</option>
+                          <option>Thailand</option>
+                          <option>Laos</option>
+                          <option>Campuchia</option>
                         </select>
                         <div className="invalid-feedback">
                           Please select a valid country.
@@ -163,13 +214,15 @@ const Checkout = () => {
 
                       <div className="col-md-4 my-1">
                         <label for="state" className="form-label">
-                          State
+                          Thành phố
                         </label>
                         <br />
-                        <select className="form-select" id="state" required>
-                          <option value="">Choose...</option>
-                          <option>Punjab</option>
-                        </select>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="state"
+                          placeholder="Thành phố"
+                        />
                         <div className="invalid-feedback">
                           Please provide a valid state.
                         </div>
@@ -267,12 +320,20 @@ const Checkout = () => {
 
                     <hr className="my-4" />
 
-                    <button
+                    {/* <button
                       className="w-100 btn btn-primary "
-                      type="submit" disabled
+                      type="submit"
                     >
-                      Continue to checkout
-                    </button>
+                      Đặt hàng
+                    </button> */}
+                    <Link
+                          to="/order"
+                          className="btn btn-dark btn-lg btn-block w-100"
+                          type="submit"
+                          onClick={handleCheckout}
+                      >
+                        Đặt hàng
+                      </Link>
                   </form>
                 </div>
               </div>
@@ -288,7 +349,7 @@ const Checkout = () => {
       <div className="container my-3 py-3">
         <h1 className="text-center">Checkout</h1>
         <hr />
-        {state.length ? <ShowCheckout /> : <EmptyCart />}
+        {state ? <ShowCheckout /> : <EmptyCart />}
       </div>
       <Footer />
     </>

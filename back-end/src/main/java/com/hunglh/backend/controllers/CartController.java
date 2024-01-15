@@ -74,7 +74,7 @@ public class CartController {
     public ResponseEntity<Object> checkout(Principal principal) {
         Users user = userService.getUserByEmail(principal.getName());// Email as username
         cartService.checkout(user);
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(new String[]{"Checkout successfully"});
     }
 
 }

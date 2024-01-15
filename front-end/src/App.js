@@ -21,7 +21,8 @@ import {
     Account,
     Setting,
     Order,
-    OrderDetail
+    OrderDetail,
+    ManageOrderDetail
 } from './pages';
 
 const App = () => {
@@ -60,6 +61,7 @@ const App = () => {
                     <Route path={"/admin/add-product"} element={<AddProduct />} />
                     <Route path={"/admin/edit-product/:id"} element={<EditProduct />} />
                     <Route path={"/admin/manage-order"} element={<ManageOrder />} />
+                    <Route path={"/admin/manage-order/:orderId"} element={<ManageOrderDetail />} />
                 </>
             )}
 

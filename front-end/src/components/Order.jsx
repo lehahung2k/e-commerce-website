@@ -4,8 +4,9 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
+import '../assets/style.css'
+
 const Order = () => {
-    const [orderInfo, setOrderInfo] = useState(null);
     const [orders, setOrders] = useState([]);
     const { orderId } = useParams();
     const authState = useSelector((state) => state.authReducer);
@@ -20,7 +21,6 @@ const Order = () => {
                         },
                     });
                 setOrders(response.data.orders.content);
-                console.log(orders);
             } catch (error) {
                 console.error("Error fetching orders:", error);
             }
@@ -28,6 +28,13 @@ const Order = () => {
 
         fetchOrders();
     }, []);
+
+    const orderStatusMap = {
+        0: "Đã đặt",
+        1: "Đã hoàn thành",
+        2: "Huỷ đơn hàng",
+        3: "Đang vận chuyển",
+    };
 
     return (
         <div className="container my-3 py-3">
@@ -51,12 +58,11 @@ const Order = () => {
                             <td>{order.buyerPhone}</td>
                             <td>{order.buyerAddress}</td>
                             <td>${order.orderAmount}</td>
-                            <td>{order.orderStatus === 0 ? "Đã đặt" : "Đang vận chuyển"}</td>
+                            <td className={`order-status-${order.orderStatus}`}>{orderStatusMap[order.orderStatus]}</td>
                             <td>{new Date(order.createTime).toLocaleString()}</td>
                             <td>
                                 <Link to={{
-                                    pathname: `/order/${order.orderId}`,
-                                    state: { products: order.products } // Truyền products qua state
+                                    pathname: `/order/${order.orderId}`
                                 }} className="btn btn-warning btn-sm">
                                     Xem
                                 </Link>

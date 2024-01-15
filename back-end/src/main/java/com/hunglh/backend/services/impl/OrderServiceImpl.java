@@ -60,22 +60,31 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderMain findOne(Long orderId) {
-        OrderMain orderMain = orderRepository.findByOrderId(orderId);
-        if(orderMain == null) {
-            throw new RuntimeException("Order Not Found");
+        try {
+            return orderRepository.findByOrderId(orderId);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
         }
-        return orderMain;
     }
 
     @Override
     @Transactional
     public OrderMain finish(Long orderId) {
         OrderMain orderMain = findOne(orderId);
-        if(!orderMain.getOrderStatus().equals(OrderStatusEnum.NEW.getCode())) {
+        if(!orderMain.getOrderStatus().equals(OrderStatusEnum.IN_PROGRESS.getCode())) {
             throw new RuntimeException("Order Status Error");
         }
 
         orderMain.setOrderStatus(OrderStatusEnum.FINISHED.getCode());
+        orderRepository.save(orderMain);
+        return orderRepository.findByOrderId(orderId);
+    }
+
+    @Override
+    @Transactional
+    public OrderMain deliver(Long orderId) {
+        OrderMain orderMain = findOne(orderId);
+        orderMain.setOrderStatus(OrderStatusEnum.IN_PROGRESS.getCode());
         orderRepository.save(orderMain);
         return orderRepository.findByOrderId(orderId);
     }

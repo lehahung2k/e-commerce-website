@@ -32,15 +32,14 @@ const Products = () => {
         },
       });
       console.log(response.data);
+      alert('Thêm sản phẩm thành công. Hãy kiểm tra giỏ hàng!');
       // Nếu thành công, dispatch action để cập nhật giỏ hàng trong Redux
       if (response.data === true) {
         dispatch(addCart(product));
-        alert('Thêm sản phẩm thành công. Hãy kiểm tra giỏ hàng!');
       }
     } catch (error) {
       console.error("Error during adding to cart:", error);
     }
-    
   }
 
   useEffect(() => {

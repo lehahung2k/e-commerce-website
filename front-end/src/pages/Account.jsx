@@ -55,10 +55,6 @@ const Account = () => {
             </div>
           </div>
         </div>
-
-        <h2 className="text-center">Đơn hàng</h2>
-        <hr/>
-        <OrderComponent />
       </div>
       <Footer />
     </>

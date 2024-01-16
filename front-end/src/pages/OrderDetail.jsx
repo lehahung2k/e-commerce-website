@@ -41,7 +41,7 @@ const OrderDetail = () => {
         const userConfirmed = window.confirm("Bạn có chắc chắn muốn huỷ đơn hàng này?");
         if (userConfirmed) {
             try {
-                const response = await axios.delete(`http://localhost:1103/api/order/cancel/${orderId}`,
+                const response = await axios.patch(`http://localhost:1103/api/order/cancel/${orderId}`,
                     {
                         headers: {
                             Authorization: `Bearer ${authState.token}`,
@@ -55,16 +55,19 @@ const OrderDetail = () => {
     }
 
     const handleFinish = async () => {
-        try {
-            const response = await axios.put(`http://localhost:1103/api/order/finish/${orderId}`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${authState.token}`,
-                    },
-                });
-            window.location.href = "/order";
-        } catch (error) {
-            console.error("Error finishing order:", error);
+        const userConfirmed = window.confirm("Bạn đã nhận được đơn hàng này?");
+        if (userConfirmed) {
+            try {
+                const response = await axios.patch(`http://localhost:1103/api/order/finish/${orderId}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${authState.token}`,
+                        },
+                    });
+                window.location.href = "/order";
+            } catch (error) {
+                console.error("Error finishing order:", error);
+            }
         }
     }
 
@@ -109,14 +112,17 @@ const OrderDetail = () => {
                 </table>
                 <hr />
                 <div className="row">
-                    {orderStatus === 1 ? (
+                    {orderStatus === 3 ? (
+                        <button className="btn btn-success btn-sm mx-2" onClick={handleFinish}>Đã nhận được hàng</button>
+                    ) : (
+                        <button className="btn btn-success btn-sm mx-2" disabled>Đã nhận được hàng</button>
+                    )}
+                    {orderStatus !== 0 ? (
                         <>
-                            <button className="btn btn-success btn-sm mx-2" disabled>Đã nhận được hàng</button>
                             <button className="btn btn-danger btn-sm mx-2" disabled>Huỷ đơn hàng</button>
                         </>
                     ): (
                         <>
-                            <button className="btn btn-success btn-sm mx-2" onClick={handleFinish}>Đã nhận được hàng</button>
                             <button className="btn btn-danger btn-sm mx-2" onClick={handleDelete}>Huỷ đơn hàng</button>
                         </>
                     )}

@@ -12,6 +12,7 @@ import com.hunglh.backend.services.CartService;
 import com.hunglh.backend.services.ProductService;
 import com.hunglh.backend.services.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,23 +39,26 @@ public class CartServiceImpl implements CartService {
     @Override
     @Transactional
     public void mergeLocalCart(Collection<ProductInOrder> productInOrders, Users user) {
-        Cart finalCart = user.getCart();
-        productInOrders.forEach(productInOrder -> {
-            Set<ProductInOrder> set = finalCart.getProducts();
-            Optional<ProductInOrder> old = set.stream().filter(e -> e.getProductId().equals(productInOrder.getProductId())).findFirst();
-            ProductInOrder prod;
-            if (old.isPresent()) {
-                prod = old.get();
-                prod.setCount(productInOrder.getCount() + prod.getCount());
-            } else {
-                prod = productInOrder;
-                prod.setCart(finalCart);
-                finalCart.getProducts().add(prod);
-            }
-            productInOrderRepository.save(prod);
-        });
-        cartRepository.save(finalCart);
-
+        try {
+            Cart finalCart = user.getCart();
+            productInOrders.forEach(productInOrder -> {
+                Set<ProductInOrder> set = finalCart.getProducts();
+                Optional<ProductInOrder> old = set.stream().filter(e -> e.getProductId().equals(productInOrder.getProductId())).findFirst();
+                ProductInOrder prod;
+                if (old.isPresent()) {
+                    prod = old.get();
+                    prod.setCount(productInOrder.getCount() + prod.getCount());
+                } else {
+                    prod = productInOrder;
+                    prod.setCart(finalCart);
+                    finalCart.getProducts().add(prod);
+                }
+                productInOrderRepository.save(prod);
+            });
+            cartRepository.save(finalCart);
+        } catch (Exception e) {
+            ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @Override

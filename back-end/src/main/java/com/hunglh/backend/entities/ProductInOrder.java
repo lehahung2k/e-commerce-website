@@ -28,7 +28,7 @@ public class ProductInOrder {
     @JsonIgnore
     private OrderMain orderMain;
 
-    @Column(name = "product_id", unique = true) // Thêm unique cho productId
+    @Column(name = "product_id")
     private Long productId;
 
     @Column(name = "product_name")

@@ -5,6 +5,7 @@ import Marquee from "react-fast-marquee";
 import { useDispatch } from "react-redux";
 import { addCart } from "../redux/action";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 import { Footer, Navbar } from "../components";
 
@@ -15,11 +16,30 @@ const ProductDetail = () => {
   const [similarProducts, setSimilarProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
+  const authState = useSelector(state => state.authReducer);
 
   const dispatch = useDispatch();
 
-  const addProduct = (product) => {
-    dispatch(addCart(product));
+  const addProduct = async (product) => {
+    try {
+      // Gửi yêu cầu thêm vào giỏ hàng
+      const response = await axios.post('http://localhost:1103/api/cart/add', {
+        productId: product.productId,
+        quantityInStock: 1, // Số lượng có thể điều chỉnh tùy vào ý của bạn
+        }, {
+        headers: {
+          Authorization: `Bearer ${authState.token}`, // Bearer token (nếu có)
+        },
+      });
+      console.log(response.data);
+      alert('Thêm sản phẩm thành công. Hãy kiểm tra giỏ hàng!');
+      // Nếu thành công, dispatch action để cập nhật giỏ hàng trong Redux
+      if (response.data === true) {
+        dispatch(addCart(product));
+      }
+    } catch (error) {
+      console.error("Error during adding to cart:", error);
+    }    
   };
 
   useEffect(() => {
@@ -101,7 +121,7 @@ const ProductDetail = () => {
                 <li className="list-group-item lead">Màu sắc: {product.color}</li>
               </ul>
               <p className="lead border"></p>
-              {product.quantityInStock > 0 ? (
+              {product.productStatus === 0 ? (
                 <p className="lead text-success">Còn hàng</p>
               ) : (
                 <p className="lead text-danger">Hết hàng</p>

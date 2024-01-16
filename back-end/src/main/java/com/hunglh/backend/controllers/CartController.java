@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Map;
 
 @CrossOrigin
 @RestController
@@ -34,7 +35,7 @@ public class CartController {
         try {
             cartService.mergeLocalCart(productInOrders, user);
         } catch (Exception e) {
-            ResponseEntity.badRequest().body("Merge Cart Failed");
+            ResponseEntity.badRequest().body(e.getMessage());
         }
         return ResponseEntity.ok(cartService.getCart(user));
     }
@@ -46,14 +47,15 @@ public class CartController {
     }
 
     @PostMapping("/add")
-    public boolean addToCart(@RequestBody NewProductCart newProduct, Principal principal) {
+    public ResponseEntity<Object> addToCart(@RequestBody NewProductCart newProduct, Principal principal) {
         var productInfo = productService.findByProductId(newProduct.getProductId());
         try {
             mergeCart(Collections.singleton(new ProductInOrder(productInfo, newProduct.getQuantityInStock())), principal);
         } catch (Exception e) {
-            return false;
+            System.out.println(e.getMessage());
+            return ResponseEntity.badRequest().body(false);
         }
-        return true;
+        return ResponseEntity.ok().body(Map.of("Add to cart success", true));
     }
 
     @PutMapping("/{itemId}")

@@ -6,9 +6,10 @@ import {useSelector} from "react-redux";
 import {useParams} from "react-router-dom";
 import {Link} from "react-router-dom";
 
+import '../../assets/style.css'
+
 const ViewOrder = () => {
     const [orders, setOrders] = useState([]);
-    const { orderId } = useParams();
     const authState = useSelector((state) => state.authReducer);
 
     useEffect(() => {
@@ -65,7 +66,7 @@ const ViewOrder = () => {
                             <td>{order.buyerPhone}</td>
                             <td>{order.buyerAddress}</td>
                             <td>${order.orderAmount}</td>
-                            <td>{orderStatusMap[order.orderStatus]}</td>
+                            <td className={`order-status-${order.orderStatus}`}>{orderStatusMap[order.orderStatus]}</td>
                             <td>{new Date(order.createTime).toLocaleString()}</td>
                             <td>
                                 <Link to={{

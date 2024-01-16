@@ -39,6 +39,7 @@ const Order = () => {
     return (
         <div className="container my-3 py-3">
             <h2>Danh sách đơn hàng</h2>
+            <hr/>
             <table className="table">
                 <thead>
                     <tr>

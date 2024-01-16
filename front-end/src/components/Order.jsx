@@ -1,15 +1,14 @@
-import React from "react";
-import {AdminNavBar, Footer} from "../../components";
-import {useEffect, useState} from "react";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import axios from "axios";
-import {useSelector} from "react-redux";
-import {useParams} from "react-router-dom";
-import {Link} from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
-import '../../assets/style.css'
+import '../assets/style.css'
 
-const ViewOrder = () => {
+const Order = () => {
     const [orders, setOrders] = useState([]);
+    const { orderId } = useParams();
     const authState = useSelector((state) => state.authReducer);
 
     useEffect(() => {
@@ -38,17 +37,13 @@ const ViewOrder = () => {
     };
 
     return (
-        <>
-            <AdminNavBar/>
-            <div className="container my-3 py-3">
-                <h1 className="text-center">Danh sách đơn hàng</h1>
-                <hr/>
-                <table className="table">
-                    <thead>
+        <div className="container my-3 py-3">
+            <h2>Danh sách đơn hàng</h2>
+            <hr/>
+            <table className="table">
+                <thead>
                     <tr>
                         <th>Mã đơn</th>
-                        <th>Khách hàng</th>
-                        <th>Email</th>
                         <th>Số điện thoại</th>
                         <th>Địa chỉ nhận</th>
                         <th>Số tiền</th>
@@ -56,13 +51,11 @@ const ViewOrder = () => {
                         <th>Ngày đặt</th>
                         <th>Xem đơn</th>
                     </tr>
-                    </thead>
-                    <tbody>
+                </thead>
+                <tbody>
                     {orders.map((order) => (
                         <tr key={order.orderId}>
                             <td>{order.orderId}</td>
-                            <td>{order.buyerName}</td>
-                            <td>{order.buyerEmail}</td>
                             <td>{order.buyerPhone}</td>
                             <td>{order.buyerAddress}</td>
                             <td>${order.orderAmount}</td>
@@ -70,19 +63,17 @@ const ViewOrder = () => {
                             <td>{new Date(order.createTime).toLocaleString()}</td>
                             <td>
                                 <Link to={{
-                                    pathname: `/admin/manage-order/${order.orderId}`
-                                }} className="btn btn-outline-dark">
-                                Xem đơn
+                                    pathname: `/order/${order.orderId}`
+                                }} className="btn btn-warning btn-sm">
+                                    Xem
                                 </Link>
                             </td>
                         </tr>
                     ))}
-                    </tbody>
-                </table>   
-            </div>
-            <Footer/>
-        </>
+                </tbody>
+            </table>
+        </div>
     );
 }
 
-export default ViewOrder;
+export default Order;

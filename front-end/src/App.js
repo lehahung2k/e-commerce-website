@@ -19,7 +19,10 @@ import {
     EditProduct,
     ManageOrder,
     Account,
-    Setting
+    Setting,
+    Order,
+    OrderDetail,
+    ManageOrderDetail
 } from './pages';
 
 const App = () => {
@@ -42,6 +45,14 @@ const App = () => {
             <Route path={"/account"} element={<Account />} />
             <Route path={"/settings"} element={<Setting />} />
 
+            {/* Cho vai trò USER */}
+            {userInfo && userInfo.role === 'USER' && (
+                <>
+                    <Route path='/order' element={<Order />} />
+                    <Route path="/order/:orderId" element={<OrderDetail />} />
+                </>
+            )}
+
             {/* Cho vai trò ADMIN */}
             {userInfo && userInfo.role === 'ADMIN' && (
                 <>
@@ -50,6 +61,7 @@ const App = () => {
                     <Route path={"/admin/add-product"} element={<AddProduct />} />
                     <Route path={"/admin/edit-product/:id"} element={<EditProduct />} />
                     <Route path={"/admin/manage-order"} element={<ManageOrder />} />
+                    <Route path={"/admin/manage-order/:orderId"} element={<ManageOrderDetail />} />
                 </>
             )}
 

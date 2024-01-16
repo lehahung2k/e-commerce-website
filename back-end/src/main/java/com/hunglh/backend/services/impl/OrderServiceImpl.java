@@ -13,8 +13,11 @@ import com.hunglh.backend.services.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -26,8 +29,13 @@ public class OrderServiceImpl implements OrderService {
     private final ProductInOrderRepository productInOrderRepository;
 
     @Override
-    public Page<OrderMain> findAll(Pageable pageable) {
-        return orderRepository.findAllByOrderByOrderStatusAscCreateTimeDesc(pageable);
+    public ResponseEntity<Object> findAll(Pageable pageable) {
+        Page<OrderMain> order =  orderRepository.findAllByOrderByOrderStatusAscCreateTimeDesc(pageable);
+        return ResponseEntity.status(200).body(Map.of(
+                "orders", order,
+                "totalPages", order.getTotalPages(),
+                "totalElements", order.getTotalElements()
+        ));
     }
 
     @Override
@@ -36,8 +44,13 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Page<OrderMain> findByBuyerEmail(String email, Pageable pageable) {
-        return orderRepository.findAllByBuyerEmailOrderByOrderStatusAscCreateTimeDesc(email, pageable);
+    public ResponseEntity<Object> findByBuyerEmail(String email, Pageable pageable) {
+        Page<OrderMain> order = orderRepository.findAllByBuyerEmailOrderByOrderStatusAscCreateTimeDesc(email, pageable);
+        return ResponseEntity.status(200).body(Map.of(
+                "orders", order,
+                "totalPages", order.getTotalPages(),
+                "totalElements", order.getTotalElements()
+        ));
     }
 
     @Override
@@ -47,22 +60,31 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderMain findOne(Long orderId) {
-        OrderMain orderMain = orderRepository.findByOrderId(orderId);
-        if(orderMain == null) {
-            throw new RuntimeException("Order Not Found");
+        try {
+            return orderRepository.findByOrderId(orderId);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
         }
-        return orderMain;
     }
 
     @Override
     @Transactional
     public OrderMain finish(Long orderId) {
         OrderMain orderMain = findOne(orderId);
-        if(!orderMain.getOrderStatus().equals(OrderStatusEnum.NEW.getCode())) {
+        if(!orderMain.getOrderStatus().equals(OrderStatusEnum.IN_PROGRESS.getCode())) {
             throw new RuntimeException("Order Status Error");
         }
 
         orderMain.setOrderStatus(OrderStatusEnum.FINISHED.getCode());
+        orderRepository.save(orderMain);
+        return orderRepository.findByOrderId(orderId);
+    }
+
+    @Override
+    @Transactional
+    public OrderMain deliver(Long orderId) {
+        OrderMain orderMain = findOne(orderId);
+        orderMain.setOrderStatus(OrderStatusEnum.IN_PROGRESS.getCode());
         orderRepository.save(orderMain);
         return orderRepository.findByOrderId(orderId);
     }

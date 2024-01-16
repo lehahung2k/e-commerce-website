@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.persistence.CascadeType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.*;
 
 import java.io.Serializable;
@@ -15,6 +16,7 @@ import java.util.Set;
 @Entity
 @Data
 @NoArgsConstructor
+@ToString
 public class OrderMain {
 
     @Id

@@ -68,7 +68,7 @@ const Navbar = () => {
                                         >
                                             {userInfo.fullName}
                                         </button>
-                                        <div className="dropdown-menu" aria-labelledby="userDropdown">
+                                        <div className="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                                             <NavLink className="dropdown-item" to="/order">
                                                 Đơn hàng
                                             </NavLink>

@@ -15,7 +15,7 @@ const Checkout = () => {
     const getCart = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:1103/api/cart`,
+          `http://localhost:8080/api/cart`,
           {
             headers: {
               Authorization: `Bearer ${authState.token}`,
@@ -36,7 +36,7 @@ const Checkout = () => {
   const handleCheckout = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:1103/api/cart/checkout`,
+        `http://localhost:8080/api/cart/checkout`,
         {
           products: cartInfo,
         },

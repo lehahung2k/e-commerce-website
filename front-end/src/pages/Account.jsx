@@ -11,7 +11,7 @@ const Account = () => {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const response = await axios.get(`http://localhost:1103/api/user/info?email=${userInfo.email}`);
+        const response = await axios.get(`http://localhost:8080/api/user/info?email=${userInfo.email}`);
         const data = response.data;
         setUser(data.user);
       } catch (error) {

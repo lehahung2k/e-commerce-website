@@ -18,7 +18,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ImageServiceImpl implements ImageService {
     public static String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "/upload/images";
-    public static String storeImageUrl = "http://localhost:1103/api" + "/upload/images/";
+    public static String storeImageUrl = "http://localhost:8080/api" + "/upload/images/";
 
     @Override
     public String uploadImage(MultipartFile file) throws IOException {

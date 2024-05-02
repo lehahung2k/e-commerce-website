@@ -14,7 +14,7 @@ const ManageUser = () => {
   useEffect(() => {
     const getProducts = async () => {
       try {
-        let apiUrl = 'http://localhost:1103/api/product';
+        let apiUrl = 'http://localhost:8080/api/product';
         if (searchTerm) {
           apiUrl += `/search?keyword=${searchTerm}`;
         } else {
@@ -45,7 +45,7 @@ const ManageUser = () => {
   // const handleSearch = async () => {
   //   try {
   //     const response =
-  //         await axios.get(`http://localhost:1103/api/product/search?keyword=${searchTerm}&page=${currentPage}&size=${pageSize}`);
+  //         await axios.get(`http://localhost:8080/api/product/search?keyword=${searchTerm}&page=${currentPage}&size=${pageSize}`);
   //     setData(response.data);
   //     setProducts(response.data.content);
   //   } catch (error) {
@@ -57,7 +57,7 @@ const ManageUser = () => {
     const userConfirmed = window.confirm("Bạn có chắc chắn muốn xoá sản phẩm này?");
     if (userConfirmed) {
       try {
-        const response = await axios.delete(`http://localhost:1103/api/seller/product/${productId}/delete`);
+        const response = await axios.delete(`http://localhost:8080/api/seller/product/${productId}/delete`);
         console.log("Product deleted successfully:", response.data);
 
         // Cập nhật danh sách sản phẩm sau khi xoá

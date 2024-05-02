@@ -23,7 +23,7 @@ const Products = () => {
   const addProduct = async (product) => {
     try {
       // Gửi yêu cầu thêm vào giỏ hàng
-      const response = await axios.post('http://localhost:1103/api/cart/add', {
+      const response = await axios.post('http://localhost:8080/api/cart/add', {
         productId: product.productId,
         quantityInStock: 1, // Số lượng có thể điều chỉnh tùy vào ý của bạn
         }, {
@@ -46,7 +46,7 @@ const Products = () => {
     const getProducts = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`http://localhost:1103/api/product?page=${currentPage}&size=${pageSize}`);
+        const response = await axios.get(`http://localhost:8080/api/product?page=${currentPage}&size=${pageSize}`);
         console.log(response);
         setData(response.data.products);
         setFilter(response.data.products.content); // Thay đổi ở đây
@@ -106,7 +106,7 @@ const Products = () => {
   };
 
   const filterByBrand = async (brand) => {
-    const response = await axios.get(`http://localhost:1103/api/category/${brand}`);
+    const response = await axios.get(`http://localhost:8080/api/category/${brand}`);
     console.log(response.data.page.body);
     setFilter(response.data.page.body.products.content);
   }

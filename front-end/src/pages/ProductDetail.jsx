@@ -23,7 +23,7 @@ const ProductDetail = () => {
   const addProduct = async (product) => {
     try {
       // Gửi yêu cầu thêm vào giỏ hàng
-      const response = await axios.post('http://localhost:1103/api/cart/add', {
+      const response = await axios.post('http://localhost:8080/api/cart/add', {
         productId: product.productId,
         quantityInStock: 1, // Số lượng có thể điều chỉnh tùy vào ý của bạn
         }, {
@@ -47,11 +47,11 @@ const ProductDetail = () => {
       setLoading(true);
       setLoading2(true);
       try {
-        const response = await axios.get(`http://localhost:1103/api/product/${id}`);
+        const response = await axios.get(`http://localhost:8080/api/product/${id}`);
         const data = response.data.mobile;
         setProduct(data);
         setLoading(false);
-        const response2 = await axios.get(`http://localhost:1103/api/category/${data.brand}`);
+        const response2 = await axios.get(`http://localhost:8080/api/category/${data.brand}`);
         const data2 = await response2.data;
         setBrand(data2);
         setSimilarProducts(data2.page.body.products.content);

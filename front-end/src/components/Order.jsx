@@ -14,7 +14,7 @@ const Order = () => {
     useEffect(() => {
         const fetchOrders = async () => {
             try {
-                const response = await axios.get("http://localhost:1103/api/order",
+                const response = await axios.get("http://localhost:8080/api/order",
                     {
                         headers: {
                             Authorization: `Bearer ${authState.token}`,

@@ -1,5 +1,5 @@
 import React from "react";
-import slideImg from "../assets/main.png";
+import slideImg from "../assets/cover.jpg";
 
 const Home = () => {
   return (
@@ -14,9 +14,9 @@ const Home = () => {
           />
           <div className="card-img-overlay d-flex align-items-center">
             <div className="container">
-              <h3 className="card-title fs-1 text fw-lighter">Minh Nguyễn Store</h3>
+              <h3 className="card-title fs-1 text fw-lighter">DUY HIẾU MOBILE</h3>
               <h5 className="card-text fs-5 d-none d-sm-block ">
-                Uy tín - Chất lượng - Tận tình.
+                Cam kết đảm bảo chất lượng
               </h5>
             </div>
           </div>

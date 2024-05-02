@@ -18,7 +18,7 @@ const Cart = () => {
     const getCart = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:1103/api/cart`,
+          `http://localhost:8080/api/cart`,
           {
             headers: {
               Authorization: `Bearer ${authState.token}`,
@@ -72,7 +72,7 @@ const Cart = () => {
     const updatedProduct = product.count + 1;
     try {
       const response = await axios.put(
-        `http://localhost:1103/api/cart/${product.productId}`,
+        `http://localhost:8080/api/cart/${product.productId}`,
         updatedProduct,
         {
           headers: {
@@ -100,7 +100,7 @@ const Cart = () => {
       const updatedProduct = product.count - 1;
       try {
         const response = await axios.put(
-          `http://localhost:1103/api/cart/${product.productId}`,
+          `http://localhost:8080/api/cart/${product.productId}`,
           updatedProduct,
           {
             headers: {

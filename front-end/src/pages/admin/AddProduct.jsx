@@ -43,7 +43,7 @@ const AddProduct = () => {
     try {
       // Gửi request để thêm mới sản phẩm
       console.log(formData);
-      const response = await axios.post("http://localhost:1103/api/seller/product/new", formData, {
+      const response = await axios.post("http://localhost:8080/api/seller/product/new", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

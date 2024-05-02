@@ -10,7 +10,7 @@ const ManageUser = () => {
   useEffect(() => {
     const getUsers = async () => {
         try {
-          const response = await axios.get(`http://localhost:1103/api/user/manage-user`);
+          const response = await axios.get(`http://localhost:8080/api/user/manage-user`);
           console.log(response);
           setUser(response.data.users);
           console.log(users);

@@ -28,7 +28,7 @@ const EditProduct = () => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`http://localhost:1103/api/product/${id}`);
+                const response = await axios.get(`http://localhost:8080/api/product/${id}`);
                 const data = response.data.mobile;
                 setProduct(data);
                 setFormData({
@@ -79,7 +79,7 @@ const EditProduct = () => {
                 // Thêm các trường khác cần thiết
             };
             // Gửi yêu cầu cập nhật đến server
-            await axios.put(`http://localhost:1103/api/seller/product/${id}/edit`, updatedProduct);
+            await axios.put(`http://localhost:8080/api/seller/product/${id}/edit`, updatedProduct);
 
             window.alert("Cập nhật sản phẩm thành công");
             window.location.href = "/admin/product";

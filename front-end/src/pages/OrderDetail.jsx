@@ -14,7 +14,7 @@ const OrderDetail = () => {
     useEffect(() => {
         const fetchOrder = async () => {
             try {
-                const response = await axios.get(`http://localhost:1103/api/order/${orderId}`,
+                const response = await axios.get(`http://localhost:8080/api/order/${orderId}`,
                     {
                         headers: {
                             Authorization: `Bearer ${authState.token}`,
@@ -41,7 +41,7 @@ const OrderDetail = () => {
         const userConfirmed = window.confirm("Bạn có chắc chắn muốn huỷ đơn hàng này?");
         if (userConfirmed) {
             try {
-                const response = await axios.patch(`http://localhost:1103/api/order/cancel/${orderId}`,
+                const response = await axios.patch(`http://localhost:8080/api/order/cancel/${orderId}`,
                     {
                         headers: {
                             Authorization: `Bearer ${authState.token}`,
@@ -58,7 +58,7 @@ const OrderDetail = () => {
         const userConfirmed = window.confirm("Bạn đã nhận được đơn hàng này?");
         if (userConfirmed) {
             try {
-                const response = await axios.patch(`http://localhost:1103/api/order/finish/${orderId}`,
+                const response = await axios.patch(`http://localhost:8080/api/order/finish/${orderId}`,
                     {
                         headers: {
                             Authorization: `Bearer ${authState.token}`,

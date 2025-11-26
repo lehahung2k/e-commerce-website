@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { addCart, delCart, login } from "../redux/action";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import API_BASE_URL from '../config';
 
 const Cart = () => {
   const [productInOrders, setProductInOrders] = useState([]);
@@ -18,7 +19,7 @@ const Cart = () => {
     const getCart = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/cart`,
+          `${API_BASE_URL}/cart`,
           {
             headers: {
               Authorization: `Bearer ${authState.token}`,
@@ -72,7 +73,7 @@ const Cart = () => {
     const updatedProduct = product.count + 1;
     try {
       const response = await axios.put(
-        `http://localhost:8080/api/cart/${product.productId}`,
+        `${API_BASE_URL}/cart/${product.productId}`,
         updatedProduct,
         {
           headers: {
@@ -100,7 +101,7 @@ const Cart = () => {
       const updatedProduct = product.count - 1;
       try {
         const response = await axios.put(
-          `http://localhost:8080/api/cart/${product.productId}`,
+          `${API_BASE_URL}/cart/${product.productId}`,
           updatedProduct,
           {
             headers: {

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { AdminNavBar, Footer } from "../../components";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import API_BASE_URL from '../../config';
 
 const ManageUser = () => {
 
@@ -14,7 +15,7 @@ const ManageUser = () => {
   useEffect(() => {
     const getProducts = async () => {
       try {
-        let apiUrl = 'http://localhost:8080/api/product';
+        let apiUrl = '${API_BASE_URL}/product';
         if (searchTerm) {
           apiUrl += `/search?keyword=${searchTerm}`;
         } else {
@@ -45,7 +46,7 @@ const ManageUser = () => {
   // const handleSearch = async () => {
   //   try {
   //     const response =
-  //         await axios.get(`http://localhost:8080/api/product/search?keyword=${searchTerm}&page=${currentPage}&size=${pageSize}`);
+  //         await axios.get(`${API_BASE_URL}/product/search?keyword=${searchTerm}&page=${currentPage}&size=${pageSize}`);
   //     setData(response.data);
   //     setProducts(response.data.content);
   //   } catch (error) {
@@ -57,7 +58,7 @@ const ManageUser = () => {
     const userConfirmed = window.confirm("Bạn có chắc chắn muốn xoá sản phẩm này?");
     if (userConfirmed) {
       try {
-        const response = await axios.delete(`http://localhost:8080/api/seller/product/${productId}/delete`);
+        const response = await axios.delete(`${API_BASE_URL}/seller/product/${productId}/delete`);
         console.log("Product deleted successfully:", response.data);
 
         // Cập nhật danh sách sản phẩm sau khi xoá

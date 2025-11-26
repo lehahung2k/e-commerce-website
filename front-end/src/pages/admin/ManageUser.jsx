@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {AdminNavBar, Footer} from "../../components";
 import {Link} from "react-router-dom";
 import axios from "axios";
+import API_BASE_URL from '../../config';
 
 const ManageUser = () => {
   const [users, setUser] = useState([]);
@@ -10,7 +11,7 @@ const ManageUser = () => {
   useEffect(() => {
     const getUsers = async () => {
         try {
-          const response = await axios.get(`http://localhost:8080/api/user/manage-user`);
+          const response = await axios.get(`${API_BASE_URL}/user/manage-user`);
           console.log(response);
           setUser(response.data.users);
           console.log(users);

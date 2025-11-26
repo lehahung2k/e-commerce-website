@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import API_BASE_URL from '../../config';
 
 const ViewOrder = () => {
     const { orderId } = useParams();
@@ -15,7 +16,7 @@ const ViewOrder = () => {
     useEffect(() => {
         const fetchOrder = async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/api/order/${orderId}`,
+                const response = await axios.get(`${API_BASE_URL}/order/${orderId}`,
                     {
                         headers: {
                             Authorization: `Bearer ${authState.token}`,
@@ -43,7 +44,7 @@ const ViewOrder = () => {
         const userConfirmed = window.confirm("Xác nhận vận chuyển đơn hàng này?");
         if (userConfirmed) {
             try {
-                const response = await axios.patch(`http://localhost:8080/api/order/deliver/${orderId}`,
+                const response = await axios.patch(`${API_BASE_URL}/order/deliver/${orderId}`,
                     {
                         headers: {
                             Authorization: `Bearer ${authState.token}`,
@@ -60,7 +61,7 @@ const ViewOrder = () => {
         const userConfirmed = window.confirm("Xác nhận huỷ đơn hàng này?");
         if (userConfirmed) {
             try {
-                await axios.patch(`http://localhost:8080/api/order/cancel/${orderId}`,
+                await axios.patch(`${API_BASE_URL}/order/cancel/${orderId}`,
                     {
                         headers: {
                             Authorization: `Bearer ${authState.token}`,

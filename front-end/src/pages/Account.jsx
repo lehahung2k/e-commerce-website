@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {AdminNavBar, Footer, Navbar, OrderComponent} from "../components";
 import {useSelector} from "react-redux";
 import axios from "axios";
+import API_BASE_URL from '../config';
 
 const Account = () => {
   const [user, setUser] = useState([]);
@@ -11,7 +12,7 @@ const Account = () => {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/api/user/info?email=${userInfo.email}`);
+        const response = await axios.get(`${API_BASE_URL}/user/info?email=${userInfo.email}`);
         const data = response.data;
         setUser(data.user);
       } catch (error) {

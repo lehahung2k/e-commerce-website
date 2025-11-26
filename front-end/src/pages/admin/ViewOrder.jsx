@@ -7,6 +7,7 @@ import {useParams} from "react-router-dom";
 import {Link} from "react-router-dom";
 
 import '../../assets/style.css'
+import API_BASE_URL from '../../config';
 
 const ViewOrder = () => {
     const [orders, setOrders] = useState([]);
@@ -15,7 +16,7 @@ const ViewOrder = () => {
     useEffect(() => {
         const fetchOrders = async () => {
             try {
-                const response = await axios.get("http://localhost:8080/api/order",
+                const response = await axios.get("${API_BASE_URL}/order",
                     {
                         headers: {
                             Authorization: `Bearer ${authState.token}`,

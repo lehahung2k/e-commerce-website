@@ -3,6 +3,7 @@ import { AdminNavBar, Footer } from '../../components';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import API_BASE_URL from '../../config';
 
 const EditProduct = () => {
     const { id } = useParams();
@@ -28,7 +29,7 @@ const EditProduct = () => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/api/product/${id}`);
+                const response = await axios.get(`${API_BASE_URL}/product/${id}`);
                 const data = response.data.mobile;
                 setProduct(data);
                 setFormData({
@@ -79,7 +80,7 @@ const EditProduct = () => {
                 // Thêm các trường khác cần thiết
             };
             // Gửi yêu cầu cập nhật đến server
-            await axios.put(`http://localhost:8080/api/seller/product/${id}/edit`, updatedProduct);
+            await axios.put(`${API_BASE_URL}/seller/product/${id}/edit`, updatedProduct);
 
             window.alert("Cập nhật sản phẩm thành công");
             window.location.href = "/admin/product";

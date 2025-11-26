@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {AdminNavBar, Footer} from "../../components";
 import axios from "axios";
+import API_BASE_URL from '../../config';
 
 const AddProduct = () => {
   const [formData, setFormData] = useState({
@@ -43,7 +44,7 @@ const AddProduct = () => {
     try {
       // Gửi request để thêm mới sản phẩm
       console.log(formData);
-      const response = await axios.post("http://localhost:8080/api/seller/product/new", formData, {
+      const response = await axios.post("${API_BASE_URL}/seller/product/new", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

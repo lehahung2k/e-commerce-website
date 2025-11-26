@@ -3,6 +3,7 @@ import {Link, useNavigate} from "react-router-dom";
 import {Footer, Navbar} from "../../components";
 import {useDispatch, useSelector} from "react-redux";
 import {login} from "../../redux/action";
+import API_BASE_URL from '../../config';
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -19,7 +20,7 @@ const Login = () => {
       return;
     }
     try {
-      const response = await fetch("http://localhost:8080/api/auth/login", {
+      const response = await fetch(`${API_BASE_URL}/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

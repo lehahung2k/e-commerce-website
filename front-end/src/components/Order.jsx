@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import '../assets/style.css'
+import API_BASE_URL from '../config';
 
 const Order = () => {
     const [orders, setOrders] = useState([]);
@@ -14,7 +15,7 @@ const Order = () => {
     useEffect(() => {
         const fetchOrders = async () => {
             try {
-                const response = await axios.get("http://localhost:8080/api/order",
+                const response = await axios.get("${API_BASE_URL}/order",
                     {
                         headers: {
                             Authorization: `Bearer ${authState.token}`,

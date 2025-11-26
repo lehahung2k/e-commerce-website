@@ -3,6 +3,7 @@ import { Footer, Navbar } from "../components";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import API_BASE_URL from '../config';
 
 const Checkout = () => {
   const state = useSelector((state) => state.handleCart);
@@ -15,7 +16,7 @@ const Checkout = () => {
     const getCart = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/cart`,
+          `${API_BASE_URL}/cart`,
           {
             headers: {
               Authorization: `Bearer ${authState.token}`,
@@ -36,7 +37,7 @@ const Checkout = () => {
   const handleCheckout = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:8080/api/cart/checkout`,
+        `${API_BASE_URL}/cart/checkout`,
         {
           products: cartInfo,
         },

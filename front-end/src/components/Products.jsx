@@ -7,6 +7,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 import axios from "axios";
 
 import { Link } from "react-router-dom";
+import API_BASE_URL from '../config';
 
 const Products = () => {
   const [data, setData] = useState({ content: [] });
@@ -23,7 +24,7 @@ const Products = () => {
   const addProduct = async (product) => {
     try {
       // Gửi yêu cầu thêm vào giỏ hàng
-      const response = await axios.post('http://localhost:8080/api/cart/add', {
+      const response = await axios.post('${API_BASE_URL}/cart/add', {
         productId: product.productId,
         quantityInStock: 1, // Số lượng có thể điều chỉnh tùy vào ý của bạn
         }, {
@@ -46,7 +47,7 @@ const Products = () => {
     const getProducts = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`http://localhost:8080/api/product?page=${currentPage}&size=${pageSize}`);
+        const response = await axios.get(`${API_BASE_URL}/product?page=${currentPage}&size=${pageSize}`);
         console.log(response);
         setData(response.data.products);
         setFilter(response.data.products.content); // Thay đổi ở đây
@@ -106,7 +107,7 @@ const Products = () => {
   };
 
   const filterByBrand = async (brand) => {
-    const response = await axios.get(`http://localhost:8080/api/category/${brand}`);
+    const response = await axios.get(`${API_BASE_URL}/category/${brand}`);
     console.log(response.data.page.body);
     setFilter(response.data.page.body.products.content);
   }

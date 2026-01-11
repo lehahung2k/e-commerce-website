@@ -11,4 +11,8 @@ public class BaseController {
     public String HelloWorld() {
         return "Hello, this our web API";
     }
+    @GetMapping("health")
+    public String healthCheck() {
+        return "OK";
+    }
 }

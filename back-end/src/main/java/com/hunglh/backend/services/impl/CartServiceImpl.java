@@ -1,5 +1,6 @@
 package com.hunglh.backend.services.impl;
 
+import com.hunglh.backend.dto.order.CheckoutRequest;
 import com.hunglh.backend.entities.Cart;
 import com.hunglh.backend.entities.OrderMain;
 import com.hunglh.backend.entities.ProductInOrder;
@@ -8,6 +9,7 @@ import com.hunglh.backend.repositories.CartRepository;
 import com.hunglh.backend.repositories.OrderRepository;
 import com.hunglh.backend.repositories.ProductInOrderRepository;
 import com.hunglh.backend.repositories.UserRepository;
+import com.hunglh.backend.service.OrderProducer;
 import com.hunglh.backend.services.CartService;
 import com.hunglh.backend.services.ProductService;
 import com.hunglh.backend.services.UserService;
@@ -30,6 +32,7 @@ public class CartServiceImpl implements CartService {
     private final ProductInOrderRepository productInOrderRepository;
     private final CartRepository cartRepository;
     private final UserService userService;
+    private final OrderProducer orderProducer;
 
     @Override
     public Cart getCart(Users user) {
@@ -77,12 +80,23 @@ public class CartServiceImpl implements CartService {
 
     @Override
     @Transactional
-    public void checkout(Users user) {
-        // Creat an order
+    public void checkout(Users user, CheckoutRequest checkoutRequest) {
+        // Create an order from user info
         OrderMain order = new OrderMain(user);
+
+        // Override shipping details with what buyer typed in checkout form
+        if (checkoutRequest != null) {
+            order.setBuyerName(checkoutRequest.getFirstName() + " " + checkoutRequest.getLastName());
+            order.setBuyerPhone(checkoutRequest.getPhone());
+            order.setBuyerAddress(checkoutRequest.getAddress()
+                    + (checkoutRequest.getAddress2() != null ? ", " + checkoutRequest.getAddress2() : "")
+                    + ", " + checkoutRequest.getCity()
+                    + ", " + checkoutRequest.getCountry());
+        }
+
         orderRepository.save(order);
 
-        // clear cart's foreign key & set order's foreign key& decrease stock
+        // Move items from cart to order and decrease stock
         user.getCart().getProducts().forEach(productInOrder -> {
             productInOrder.setCart(null);
             productInOrder.setOrderMain(order);
@@ -90,5 +104,8 @@ public class CartServiceImpl implements CartService {
             productInOrderRepository.save(productInOrder);
         });
 
+        // Push to RabbitMQ for async processing (email notification, etc.)
+        orderProducer.sendOrder(order);
     }
 }
+

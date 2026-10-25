@@ -1,5 +1,6 @@
 package com.hunglh.backend.services;
 
+import com.hunglh.backend.dto.order.CheckoutRequest;
 import com.hunglh.backend.entities.Cart;
 import com.hunglh.backend.entities.ProductInOrder;
 import com.hunglh.backend.entities.Users;
@@ -13,5 +14,6 @@ public interface CartService {
 
     void delete(Long itemId, Users user);
 
-    void checkout(Users user);
+    void checkout(Users user, CheckoutRequest checkoutRequest);
 }
+

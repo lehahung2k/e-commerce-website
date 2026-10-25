@@ -1,6 +1,7 @@
 package com.hunglh.backend.services.impl;
 
 import com.hunglh.backend.dto.user.RegisterForm;
+import com.hunglh.backend.dto.user.UpdatePassword;
 import com.hunglh.backend.dto.user.UserResponse;
 import com.hunglh.backend.dto.user.UserUpdate;
 import com.hunglh.backend.entities.Cart;
@@ -62,8 +63,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updatePassword(String newPassword, String email) {
-
+    public ResponseEntity<Object> updatePassword(UpdatePassword updatePassword, String email) {
+        Users user = userRepository.findByEmail(email);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "User not found"));
+        }
+        if (!passwordEncoder.matches(updatePassword.getCurrentPassword(), user.getPassword())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "Current password is incorrect"));
+        }
+        user.setPassword(passwordEncoder.encode(updatePassword.getNewPassword()));
+        userRepository.save(user);
+        return ResponseEntity.ok(Map.of("message", "Password updated successfully"));
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.hunglh.backend.controllers;
 
+import com.hunglh.backend.dto.order.CheckoutRequest;
 import com.hunglh.backend.dto.product.NewProductCart;
 import com.hunglh.backend.entities.Cart;
 import com.hunglh.backend.entities.ProductInOrder;
@@ -73,9 +74,10 @@ public class CartController {
     }
 
     @PostMapping("/checkout")
-    public ResponseEntity<Object> checkout(Principal principal) {
-        Users user = userService.getUserByEmail(principal.getName());// Email as username
-        cartService.checkout(user);
+    public ResponseEntity<Object> checkout(@RequestBody CheckoutRequest checkoutRequest,
+                                           Principal principal) {
+        Users user = userService.getUserByEmail(principal.getName());
+        cartService.checkout(user, checkoutRequest);
         return ResponseEntity.ok(new String[]{"Checkout successfully"});
     }
 

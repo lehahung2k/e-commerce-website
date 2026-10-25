@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Footer, Navbar } from "../components";
 import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import API_BASE_URL from '../config';
 
@@ -10,80 +10,95 @@ const Checkout = () => {
   const [cartInfo, setCartInfo] = useState([]);
   const authState = useSelector((state) => state.authReducer);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  // Shipping form state
+  const [form, setForm] = useState({
+    firstName: "",
+    lastName: "",
+    phone: "",
+    address: "",
+    address2: "",
+    country: "Vietnam",
+    city: "",
+    zip: "",
+    paymentMethod: "COD",
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleFormChange = (e) => {
+    setForm({ ...form, [e.target.id]: e.target.value });
+  };
 
   useEffect(() => {
-    // Load cart data
     const getCart = async () => {
       try {
-        const response = await axios.get(
-          `${API_BASE_URL}/cart`,
-          {
-            headers: {
-              Authorization: `Bearer ${authState.token}`,
-            },
-          }
-        );
-        dispatch({ type: "SET_CART", payload: cartInfo });
-        setCartInfo(response.data.products);
-        // ... (cập nhật các state khác nếu cần)
+        const response = await axios.get(`${API_BASE_URL}/cart`, {
+          headers: { Authorization: `Bearer ${authState.token}` },
+        });
+        setCartInfo(response.data.products || []);
       } catch (error) {
         console.error("Error during fetching cart:", error);
       }
     };
-
     getCart();
   }, [authState.token]);
 
-  const handleCheckout = async () => {
-    try {
-      const response = await axios.post(
-        `${API_BASE_URL}/cart/checkout`,
-        {
-          products: cartInfo,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${authState.token}`,
-          },
-        }
-      );
-      console.log(response);
-      dispatch({ type: "CLEAR_CART" });
-    } catch (error) {
-      console.log("Error during checkout:", error);
-    }
-  }
+  const handleCheckout = async (e) => {
+    e.preventDefault();
+    setError("");
 
-  const EmptyCart = () => {
-    return (
-      <div className="container">
-        <div className="row">
-          <div className="col-md-12 py-5 bg-light text-center">
-            <h4 className="p-3 display-5">No item in Cart</h4>
-            <Link to="/" className="btn btn-outline-dark mx-4">
-              <i className="fa fa-arrow-left"></i> Continue Shopping
-            </Link>
-          </div>
+    // Basic validation
+    if (!form.firstName || !form.lastName || !form.phone || !form.address || !form.city) {
+      setError("Vui lòng điền đầy đủ thông tin giao hàng.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      await axios.post(
+        `${API_BASE_URL}/cart/checkout`,
+        form,
+        { headers: { Authorization: `Bearer ${authState.token}` } }
+      );
+      dispatch({ type: "CLEAR_CART" });
+      navigate("/order");
+    } catch (err) {
+      setError("Đặt hàng thất bại. Vui lòng thử lại.");
+      console.error("Checkout error:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const EmptyCart = () => (
+    <div className="container">
+      <div className="row">
+        <div className="col-md-12 py-5 bg-light text-center">
+          <h4 className="p-3 display-5">Giỏ hàng trống</h4>
+          <Link to="/" className="btn btn-outline-dark mx-4">
+            <i className="fa fa-arrow-left"></i> Tiếp tục mua sắm
+          </Link>
         </div>
       </div>
-    );
-  };
+    </div>
+  );
 
   const ShowCheckout = () => {
     let subtotal = 0;
-    let shipping = 30.0;
+    const shipping = 30.0;
     let totalItems = 0;
-    cartInfo.map((item) => {
-      return (subtotal += item.price * item.count);
+    cartInfo.forEach((item) => {
+      subtotal += item.price * item.count;
+      totalItems += item.count;
     });
 
-    cartInfo.map((item) => {
-      return (totalItems += item.count);
-    });
     return (
       <>
         <div className="container py-5">
           <div className="row my-4">
+            {/* Order Summary */}
             <div className="col-md-5 col-lg-4 order-md-last">
               <div className="card mb-4">
                 <div className="card-header py-3 bg-light">
@@ -95,246 +110,98 @@ const Checkout = () => {
                       Sản phẩm ({totalItems})<span>${Math.round(subtotal)}</span>
                     </li>
                     <li className="list-group-item d-flex justify-content-between align-items-center px-0">
-                      Phí ship
-                      <span>${shipping}</span>
+                      Phí ship <span>${shipping}</span>
                     </li>
                     <li className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
-                      <div>
-                        <strong>Tổng</strong>
-                      </div>
-                      <span>
-                        <strong>${Math.round(subtotal + shipping)}</strong>
-                      </span>
+                      <strong>Tổng</strong>
+                      <strong>${Math.round(subtotal + shipping)}</strong>
                     </li>
                   </ul>
                 </div>
               </div>
             </div>
+
+            {/* Shipping & Payment Form */}
             <div className="col-md-7 col-lg-8">
+              {error && <div className="alert alert-danger">{error}</div>}
               <div className="card mb-4">
                 <div className="card-header py-3">
                   <h4 className="mb-0">Địa chỉ giao hàng</h4>
                 </div>
                 <div className="card-body">
-                  <form className="needs-validation" novalidate>
+                  <form onSubmit={handleCheckout}>
                     <div className="row g-3">
                       <div className="col-sm-6 my-1">
-                        <label for="firstName" className="form-label">
-                          Họ
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="firstName"
-                          placeholder=""
-                          required
-                        />
-                        <div className="invalid-feedback">
-                          Không được để trống
-                        </div>
+                        <label htmlFor="firstName" className="form-label">Họ</label>
+                        <input type="text" className="form-control" id="firstName"
+                          value={form.firstName} onChange={handleFormChange} required />
                       </div>
-
                       <div className="col-sm-6 my-1">
-                        <label for="lastName" className="form-label">
-                          Tên đệm và tên
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="lastName"
-                          placeholder=""
-                          required
-                        />
-                        <div className="invalid-feedback">
-                          Không được để trống
-                        </div>
+                        <label htmlFor="lastName" className="form-label">Tên đệm và tên</label>
+                        <input type="text" className="form-control" id="lastName"
+                          value={form.lastName} onChange={handleFormChange} required />
                       </div>
-
                       <div className="col-12 my-1">
-                        <label for="email" className="form-label">
-                          Email
-                        </label>
-                        <input
-                          type="email"
-                          className="form-control"
-                          id="email"
-                          placeholder="you@example.com"
-                          required
-                        />
-                        <div className="invalid-feedback">
-                          Please enter a valid email address for shipping
-                          updates.
-                        </div>
+                        <label htmlFor="phone" className="form-label">Số điện thoại</label>
+                        <input type="tel" className="form-control" id="phone"
+                          value={form.phone} onChange={handleFormChange} required />
                       </div>
-
                       <div className="col-12 my-1">
-                        <label for="address" className="form-label">
-                          Địa chỉ
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="address"
-                          placeholder="1234 Main St"
-                          required
-                        />
-                        <div className="invalid-feedback">
-                          Please enter your shipping address.
-                        </div>
+                        <label htmlFor="address" className="form-label">Địa chỉ</label>
+                        <input type="text" className="form-control" id="address"
+                          placeholder="Số nhà, tên đường" value={form.address}
+                          onChange={handleFormChange} required />
                       </div>
-
                       <div className="col-12">
-                        <label for="address2" className="form-label">
-                          Địa chỉ 2{" "}
-                          <span className="text-muted">(Không bắt buộc)</span>
+                        <label htmlFor="address2" className="form-label">
+                          Địa chỉ 2 <span className="text-muted">(Không bắt buộc)</span>
                         </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="address2"
-                          placeholder="Apartment or suite"
-                        />
+                        <input type="text" className="form-control" id="address2"
+                          placeholder="Tòa nhà, tầng, phòng..." value={form.address2}
+                          onChange={handleFormChange} />
                       </div>
-
                       <div className="col-md-5 my-1">
-                        <label for="country" className="form-label">
-                          Nước
-                        </label>
-                        <br />
-                        <select className="form-select" id="country" required>
-                          <option value="">Choose...</option>
-                          <option>Vietnam</option>
-                          <option>Thailand</option>
-                          <option>Laos</option>
-                          <option>Campuchia</option>
+                        <label htmlFor="country" className="form-label">Nước</label>
+                        <select className="form-select" id="country"
+                          value={form.country} onChange={handleFormChange} required>
+                          <option value="Vietnam">Vietnam</option>
+                          <option value="Thailand">Thailand</option>
+                          <option value="Laos">Laos</option>
+                          <option value="Campuchia">Campuchia</option>
                         </select>
-                        <div className="invalid-feedback">
-                          Please select a valid country.
-                        </div>
                       </div>
-
                       <div className="col-md-4 my-1">
-                        <label for="state" className="form-label">
-                          Thành phố
-                        </label>
-                        <br />
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="state"
-                          placeholder="Thành phố"
-                        />
-                        <div className="invalid-feedback">
-                          Please provide a valid state.
-                        </div>
+                        <label htmlFor="city" className="form-label">Thành phố</label>
+                        <input type="text" className="form-control" id="city"
+                          value={form.city} onChange={handleFormChange} required />
                       </div>
-
                       <div className="col-md-3 my-1">
-                        <label for="zip" className="form-label">
-                          Zip
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="zip"
-                          placeholder=""
-                          required
-                        />
-                        <div className="invalid-feedback">
-                          Zip code required.
+                        <label htmlFor="zip" className="form-label">Zip</label>
+                        <input type="text" className="form-control" id="zip"
+                          value={form.zip} onChange={handleFormChange} />
+                      </div>
+                    </div>
+
+                    <hr className="my-4" />
+                    <h4 className="mb-3">Phương thức thanh toán</h4>
+                    <div className="row g-3">
+                      <div className="col-12">
+                        <div className="form-check">
+                          <input className="form-check-input" type="radio" id="cod"
+                            name="paymentMethod" value="COD"
+                            checked={form.paymentMethod === "COD"}
+                            onChange={(e) => setForm({ ...form, paymentMethod: e.target.value })} />
+                          <label className="form-check-label" htmlFor="cod">
+                            💵 Thanh toán khi nhận hàng (COD)
+                          </label>
                         </div>
                       </div>
                     </div>
 
                     <hr className="my-4" />
-
-                    <h4 className="mb-3">Payment</h4>
-
-                    <div className="row gy-3">
-                      <div className="col-md-6">
-                        <label for="cc-name" className="form-label">
-                          Name on card
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="cc-name"
-                          placeholder=""
-                          required
-                        />
-                        <small className="text-muted">
-                          Full name as displayed on card
-                        </small>
-                        <div className="invalid-feedback">
-                          Name on card is required
-                        </div>
-                      </div>
-
-                      <div className="col-md-6">
-                        <label for="cc-number" className="form-label">
-                          Credit card number
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="cc-number"
-                          placeholder=""
-                          required
-                        />
-                        <div className="invalid-feedback">
-                          Credit card number is required
-                        </div>
-                      </div>
-
-                      <div className="col-md-3">
-                        <label for="cc-expiration" className="form-label">
-                          Expiration
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="cc-expiration"
-                          placeholder=""
-                          required
-                        />
-                        <div className="invalid-feedback">
-                          Expiration date required
-                        </div>
-                      </div>
-
-                      <div className="col-md-3">
-                        <label for="cc-cvv" className="form-label">
-                          CVV
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="cc-cvv"
-                          placeholder=""
-                          required
-                        />
-                        <div className="invalid-feedback">
-                          Security code required
-                        </div>
-                      </div>
-                    </div>
-
-                    <hr className="my-4" />
-
-                    {/* <button
-                      className="w-100 btn btn-primary "
-                      type="submit"
-                    >
-                      Đặt hàng
-                    </button> */}
-                    <Link
-                          to="/order"
-                          className="btn btn-dark btn-lg btn-block w-100"
-                          type="submit"
-                          onClick={handleCheckout}
-                      >
-                        Đặt hàng
-                      </Link>
+                    <button type="submit" className="w-100 btn btn-dark btn-lg" disabled={loading}>
+                      {loading ? "Đang xử lý..." : "Đặt hàng"}
+                    </button>
                   </form>
                 </div>
               </div>
@@ -344,13 +211,14 @@ const Checkout = () => {
       </>
     );
   };
+
   return (
     <>
       <Navbar />
       <div className="container my-3 py-3">
         <h1 className="text-center">Checkout</h1>
         <hr />
-        {state ? <ShowCheckout /> : <EmptyCart />}
+        {cartInfo.length > 0 ? <ShowCheckout /> : <EmptyCart />}
       </div>
       <Footer />
     </>

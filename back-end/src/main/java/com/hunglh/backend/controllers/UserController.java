@@ -1,10 +1,11 @@
-package com.hunglh.backend.controllers;
-
 import com.hunglh.backend.dto.user.RegisterForm;
+import com.hunglh.backend.dto.user.UpdatePassword;
 import com.hunglh.backend.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @RestController
 @RequiredArgsConstructor
@@ -16,6 +17,12 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<Object> registerUser(@RequestBody RegisterForm registerForm) {
         return this.userService.createUser(registerForm);
+    }
+
+    @PatchMapping("/password")
+    public ResponseEntity<Object> updatePassword(@RequestBody UpdatePassword updatePassword,
+                                                 Principal principal) {
+        return this.userService.updatePassword(updatePassword, principal.getName());
     }
 
     @GetMapping("/info")
